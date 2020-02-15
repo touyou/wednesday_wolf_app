@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "542320070435",
+    "firebase_url": "https://wednesday-wolf-app.firebaseio.com",
+    "project_id": "wednesday-wolf-app",
+    "storage_bucket": "wednesday-wolf-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:542320070435:android:0ac3b55944f8061c8f4696",
+        "android_client_info": {
+          "package_name": "dev.touyou.wednesday_wolf_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "542320070435-hq3h5r5bdc94l19627lo38h08p84aotc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoGBWTREiIFMUnEX-BSgMWU2EHwcGcqkU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "542320070435-hq3h5r5bdc94l19627lo38h08p84aotc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "542320070435-uu06vbjpjc4ogppmk4rrpr73popqtgc3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "dev.touyou.wednesdayWolfApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
