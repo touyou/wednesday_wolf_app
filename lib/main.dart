@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: '水曜日のオオカミくんには騙されない。'),
+      home: const MyHomePage(title: '水曜日のオオカミくんには騙されない。'),
     );
   }
 }
