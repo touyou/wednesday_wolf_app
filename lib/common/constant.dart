@@ -12,3 +12,5 @@ const users = [
   WolfUser(8, 'あっぷる', 'apple@okamikun.jp'),
   WolfUser(9, 'おすず', 'osuzu@okamikun.jp'),
 ];
+
+const icons = [];
