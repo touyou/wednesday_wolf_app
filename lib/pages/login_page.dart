@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:wednesday_wolf_app/common/utils.dart';
 
@@ -9,11 +10,18 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController emailInputController = TextEditingController();
-
   final TextEditingController passwordInputController = TextEditingController();
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool passwordVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    passwordVisible = false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +36,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _layoutBody() {
     return Center(
       child: Form(
+        key: _formKey,
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
@@ -36,6 +45,9 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 24),
               TextFormField(
                 controller: emailInputController,
+                validator: (value) {
+                  return value.isEmpty ? '必須入力です。' : null;
+                },
                 decoration: const InputDecoration(
                   border: UnderlineInputBorder(),
                   labelText: 'Email',
@@ -44,10 +56,26 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 24),
               TextFormField(
                 controller: passwordInputController,
-                decoration: const InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: 'Password',
-                ),
+                obscureText: passwordVisible,
+                validator: (value) {
+                  return value.isEmpty ? '必須入力です。' : null;
+                },
+                decoration: InputDecoration(
+                    border: const UnderlineInputBorder(),
+                    labelText: 'Password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Theme.of(context).primaryColorDark,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          passwordVisible = !passwordVisible;
+                        });
+                      },
+                    )),
               ),
               const SizedBox(height: 24),
               Center(
@@ -56,17 +84,13 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () {
                     final email = emailInputController.text;
                     final password = passwordInputController.text;
-                    return _signIn(email, password).then((result) {
-                      Navigator.of(context).pushReplacementNamed('/home',
-                          arguments: result.user);
-                    }).catchError(
-                      (e) => showDialogMessage(
-                        context,
-                        title: 'ログインエラー',
-                        message: e.toString(),
-                        isOkOnly: true,
-                      ),
-                    );
+                    if (_formKey.currentState.validate()) {
+                      return _signIn(email, password).then((result) {
+                        Navigator.of(context).pushReplacementNamed('/home',
+                            arguments: result.user);
+                      });
+                    }
+                    return null;
                   },
                 ),
               )
@@ -78,9 +102,37 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<AuthResult> _signIn(String email, String password) async {
-    final result = await _auth.signInWithEmailAndPassword(
-        email: email, password: password);
-    print('User id is ${result.user.uid}');
+    AuthResult result;
+    try {
+      result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      print('User id is ${result.user.uid}');
+    } on PlatformException catch (error) {
+      print('Auth Error: ${error.code}');
+      await showDialogMessage(
+        context,
+        title: 'ログインエラー',
+        message: _errorMessage(error.code),
+        isOkOnly: true,
+      );
+    }
     return result;
+  }
+
+  String _errorMessage(String code) {
+    switch (code) {
+      case 'ERROR_INVALID_EMAIL':
+        return '不正なメールアドレスです。';
+      case 'ERROR_WRONG_PASSWORD':
+        return 'パスワードが間違っています。';
+      case 'ERROR_USER_NOT_FOUND':
+        return 'ユーザーが見つかりません。';
+      case 'ERROR_USER_DISABLED':
+        return '無効なユーザーです。';
+      case 'ERROR_TOO_MANY_REQUESTS':
+        return 'リクエストが集中しています。しばらくしてからもう一度お試しください。';
+      default:
+        return '不明なエラーがおきました。';
+    }
   }
 }
