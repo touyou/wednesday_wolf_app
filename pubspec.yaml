@@ -23,7 +23,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: any
-  bloc_provider: any
+  disposable_provider: any
   rxdart: any
   connectivity: any
   cloud_firestore: any

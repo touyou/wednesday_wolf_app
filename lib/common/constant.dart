@@ -1,6 +1,6 @@
 import 'package:wednesday_wolf_app/entities/wolf_user.dart';
 
-const users = [
+final List<WolfUser> users = [
   WolfUser(0, 'ゴディバ', 'godiva@okamikun.jp'),
   WolfUser(1, 'ふみっち', 'fumicchi@okamikun.jp'),
   WolfUser(2, 'とうよう', 'touyou@okamikun.jp'),
