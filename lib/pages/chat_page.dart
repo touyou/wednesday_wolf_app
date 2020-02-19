@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:wednesday_wolf_app/common/utils.dart';
 import 'package:wednesday_wolf_app/entities/chat_room.dart';
 import 'package:wednesday_wolf_app/entities/message.dart';
@@ -23,6 +25,40 @@ class _ChatPageState extends State<ChatPage> {
         title: const Text('水曜日のオオカミくんには騙されない。'),
       ),
       body: _layoutBody(context),
+      floatingActionButton: isOsuzuBy(chatId)
+          ? FloatingActionButton(
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        ListTile(
+                          leading: Icon(Icons.chat_bubble),
+                          title: const Text('メッセージ'),
+                          onTap: () =>
+                              Navigator.of(context).push(MaterialPageRoute(
+                            settings: const RouteSettings(name: '/sendMessage'),
+                            builder: (_) => SendMessagePage(
+                                reference: getRoomReference(chatId)),
+                            fullscreenDialog: true,
+                          )),
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.image),
+                          title: const Text('画像'),
+                          onTap: () => chooseFile()
+                              .then((value) => Navigator.of(context).pop()),
+                        )
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Icon(Icons.add),
+            )
+          : null,
     );
   }
 
@@ -42,28 +78,6 @@ class _ChatPageState extends State<ChatPage> {
   Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
     final children =
         snapshot.map((data) => _buildListItem(context, data)).toList();
-    if (isOsuzuBy(chatId)) {
-      children.add(Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: ListTile(
-            title: const Text('新しいメッセージを送信'),
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                settings: const RouteSettings(name: '/sendMessage'),
-                builder: (_) =>
-                    SendMessagePage(reference: getRoomReference(chatId)),
-                fullscreenDialog: true,
-              ));
-            },
-          ),
-        ),
-      ));
-    }
     return ListView(
       padding: const EdgeInsets.only(top: 20),
       children: children,
@@ -81,11 +95,30 @@ class _ChatPageState extends State<ChatPage> {
           border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.circular(5),
         ),
-        child: ListTile(
-          title: Text(message.message),
-          onTap: () => print(message),
-        ),
+        child: message.type == MessageType.message
+            ? ListTile(
+                title: Text(message.message),
+                onTap: () => print(message),
+              )
+            : Image.network(message.photoUrl),
       ),
     );
+  }
+
+  Future chooseFile() async {
+    await ImagePicker.pickImage(source: ImageSource.gallery)
+        .then((imageFile) async {
+      final fileExtension = imageFile.path.split('.').last;
+      final documentReference = getRoomReference(chatId).document();
+      final storageReference = FirebaseStorage.instance
+          .ref()
+          .child('images/${documentReference.documentID}.$fileExtension');
+      final uploadTask = storageReference.putFile(imageFile);
+      await uploadTask.onComplete;
+      await storageReference.getDownloadURL().then((fileURL) {
+        documentReference
+            .setData(Message.newImage(photoUrl: fileURL as String).map);
+      });
+    });
   }
 }

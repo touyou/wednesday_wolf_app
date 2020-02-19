@@ -37,7 +37,6 @@ class _SendMessagePageState extends State<SendMessagePage> {
         child: Icon(Icons.send),
       ),
     );
-    ;
   }
 
   Widget _layoutBody(BuildContext context) {
