@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:wednesday_wolf_app/common/utils.dart';
 import 'package:wednesday_wolf_app/entities/chat_room.dart';
 import 'package:wednesday_wolf_app/entities/message.dart';
+import 'package:wednesday_wolf_app/pages/send_message_page.dart';
 
 class ChatPage extends StatefulWidget {
   @override
@@ -51,7 +52,14 @@ class _ChatPageState extends State<ChatPage> {
           ),
           child: ListTile(
             title: const Text('新しいメッセージを送信'),
-            onTap: () => print('hello'),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                settings: const RouteSettings(name: '/sendMessage'),
+                builder: (_) =>
+                    SendMessagePage(reference: getRoomReference(chatId)),
+                fullscreenDialog: true,
+              ));
+            },
           ),
         ),
       ));
