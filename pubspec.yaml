@@ -53,6 +53,10 @@ flutter:
     - images/splash_comment.png
     - images/splash_loading.png
     - images/splash_title.png
+    - images/eye_close.png
+    - images/eye_open.png
+    - images/login_button.png
+    - images/login_hero.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

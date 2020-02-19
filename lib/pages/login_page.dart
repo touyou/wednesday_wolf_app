@@ -14,88 +14,109 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailInputController = TextEditingController();
   final TextEditingController passwordInputController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final OutlineInputBorder normalOutlineBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(5),
+    borderSide: const BorderSide(style: BorderStyle.none),
+  );
+  final OutlineInputBorder errorOutlineBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(5),
+    borderSide: const BorderSide(color: Color(0xffef9a9a)),
+  );
   bool passwordVisible = false;
 
   @override
   void initState() {
     super.initState();
 
-    passwordVisible = false;
+    passwordVisible = true;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
+      backgroundColor: const Color.fromRGBO(242, 242, 242, 1),
       body: _layoutBody(),
     );
   }
 
   Widget _layoutBody() {
-    return Center(
-      child: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              const SizedBox(height: 24),
-              TextFormField(
-                controller: emailInputController,
-                validator: (value) {
-                  return value.isEmpty ? '必須入力です。' : null;
-                },
-                decoration: const InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: 'Email',
-                ),
+    return Form(
+      key: _formKey,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            const SizedBox(height: 24),
+            Image.asset(
+              'images/login_hero.png',
+              height: 300,
+            ),
+            const SizedBox(height: 24),
+            TextFormField(
+              controller: emailInputController,
+              validator: (value) {
+                return value.isEmpty ? '必須入力です。' : null;
+              },
+              decoration: InputDecoration(
+                enabledBorder: normalOutlineBorder,
+                focusedBorder: normalOutlineBorder,
+                errorBorder: errorOutlineBorder,
+                focusedErrorBorder: errorOutlineBorder,
+                filled: true,
+                fillColor: const Color.fromRGBO(235, 235, 235, 1),
+                hintText: 'nickname@okamikun.jp',
               ),
-              const SizedBox(height: 24),
-              TextFormField(
-                controller: passwordInputController,
-                obscureText: passwordVisible,
-                validator: (value) {
-                  return value.isEmpty ? '必須入力です。' : null;
-                },
-                decoration: InputDecoration(
-                    border: const UnderlineInputBorder(),
-                    labelText: 'Password',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        passwordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: Theme.of(context).primaryColorDark,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          passwordVisible = !passwordVisible;
-                        });
-                      },
-                    )),
-              ),
-              const SizedBox(height: 24),
-              Center(
-                child: RaisedButton(
-                  child: const Text('Login'),
+            ),
+            const SizedBox(height: 24),
+            TextFormField(
+              controller: passwordInputController,
+              obscureText: passwordVisible,
+              validator: (value) {
+                return value.isEmpty ? '必須入力です。' : null;
+              },
+              decoration: InputDecoration(
+                enabledBorder: normalOutlineBorder,
+                focusedBorder: normalOutlineBorder,
+                errorBorder: errorOutlineBorder,
+                focusedErrorBorder: errorOutlineBorder,
+                filled: true,
+                fillColor: const Color.fromRGBO(235, 235, 235, 1),
+                hintText: 'password',
+                suffixIcon: IconButton(
+                  icon: passwordVisible
+                      ? Image.asset('images/eye_open.png')
+                      : Image.asset('images/eye_close.png'),
                   onPressed: () {
-                    final email = emailInputController.text;
-                    final password = passwordInputController.text;
-                    if (_formKey.currentState.validate()) {
-                      return _signIn(email, password).then((result) {
-                        Navigator.of(context).pushReplacementNamed('/home',
-                            arguments: result.user);
-                      });
-                    }
-                    return null;
+                    setState(() {
+                      passwordVisible = !passwordVisible;
+                    });
                   },
                 ),
-              )
-            ],
-          ),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Center(
+              child: RaisedButton(
+                child: Image.asset('images/login_button.png'),
+                color: const Color.fromRGBO(43, 79, 131, 1),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                onPressed: () {
+                  final email = emailInputController.text;
+                  final password = passwordInputController.text;
+                  if (_formKey.currentState.validate()) {
+                    return _signIn(email, password).then((result) {
+                      Navigator.of(context).pushReplacementNamed('/home',
+                          arguments: result.user);
+                    });
+                  }
+                  return null;
+                },
+              ),
+            )
+          ],
         ),
       ),
     );
