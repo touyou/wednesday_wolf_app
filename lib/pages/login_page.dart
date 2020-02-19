@@ -47,12 +47,12 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            const SizedBox(height: 24),
+            const SizedBox(height: 32),
             Image.asset(
               'images/login_hero.png',
-              height: 300,
+              height: 200,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 16),
             TextFormField(
               controller: emailInputController,
               validator: (value) {
@@ -95,9 +95,13 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 60),
             Center(
               child: RaisedButton(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16,
+                  horizontal: 24,
+                ),
                 child: Image.asset('images/login_button.png'),
                 color: const Color.fromRGBO(43, 79, 131, 1),
                 shape: RoundedRectangleBorder(

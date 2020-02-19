@@ -34,7 +34,7 @@ class _SplashPageState extends State<SplashPage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 43, 79, 131),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 128),
+        padding: const EdgeInsets.symmetric(vertical: 80),
         child: Center(
           child: Column(
             children: <Widget>[
