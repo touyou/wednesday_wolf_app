@@ -19,18 +19,3 @@ class Message {
 }
 
 enum MessageType { message, photo, unknown }
-
-class MessageRoom {
-  MessageRoom.fromMap(Map<String, dynamic> map, {this.reference})
-      : assert(map['fromId'] != null),
-        assert(map['toId'] != null),
-        fromId = map['fromId'] as int,
-        toId = map['toId'] as int;
-
-  MessageRoom.fromSnapshot(DocumentSnapshot snapshot)
-      : this.fromMap(snapshot.data, reference: snapshot.reference);
-
-  final int fromId;
-  final int toId;
-  final DocumentReference reference;
-}

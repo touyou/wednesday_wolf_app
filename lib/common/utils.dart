@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:wednesday_wolf_app/common/constant.dart';
+import 'package:wednesday_wolf_app/entities/chat_room.dart';
 import 'package:wednesday_wolf_app/entities/wolf_user.dart';
 
 WolfUser searchWolf(FirebaseUser user) {
@@ -42,4 +43,12 @@ Widget _buildDialog(BuildContext context, String title, String message,
     content: message != null ? Text(message) : null,
     actions: actions,
   );
+}
+
+bool isOsuzu(WolfUser user, WolfUser me) {
+  return user.id == 9;
+}
+
+bool isOsuzuBy(ChatId chatId) {
+  return chatId.toId == 9;
 }

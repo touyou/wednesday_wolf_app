@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:wednesday_wolf_app/common/utils.dart';
+import 'package:wednesday_wolf_app/entities/chat_room.dart';
 import 'package:wednesday_wolf_app/entities/wolf_user.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,7 +14,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   FirebaseUser currentUser;
 
-  WolfUser get user => searchWolf(currentUser);
+  WolfUser get me => searchWolf(currentUser);
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +42,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
+    final children = <Widget>[];
+    for (final data in snapshot) {
+      final user = WolfUser.fromSnapshot(data);
+      if (!isOsuzu(user, me)) {
+        continue;
+      }
+      children.add(_buildListItem(context, data));
+    }
+
     return ListView(
       padding: const EdgeInsets.only(top: 20),
-      children: snapshot.map((data) => _buildListItem(context, data)).toList(),
+      children: children,
     );
   }
 
@@ -61,7 +71,8 @@ class _HomePageState extends State<HomePage> {
         child: ListTile(
           title: Text(user.name),
           trailing: Text(user.email),
-          onTap: () => print(user.id),
+          onTap: () => Navigator.of(context).pushNamed('/chat',
+              arguments: ChatId(fromId: me.id, toId: user.id)),
         ),
       ),
     );
