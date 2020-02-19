@@ -46,7 +46,10 @@ Widget _buildDialog(BuildContext context, String title, String message,
 }
 
 bool isOsuzu(WolfUser user, WolfUser me) {
-  return user.id == 9;
+  if (user.id == me.id) {
+    return false;
+  }
+  return user.id == 9 || me.id == 9;
 }
 
 bool isOsuzuBy(ChatId chatId) {

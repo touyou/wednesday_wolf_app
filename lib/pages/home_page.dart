@@ -72,7 +72,9 @@ class _HomePageState extends State<HomePage> {
           title: Text(user.name),
           trailing: Text(user.email),
           onTap: () => Navigator.of(context).pushNamed('/chat',
-              arguments: ChatId(fromId: me.id, toId: user.id)),
+              arguments: me.id == 9
+                  ? ChatId(fromId: user.id, toId: me.id, isSender: false)
+                  : ChatId(fromId: me.id, toId: user.id, isSender: true)),
         ),
       ),
     );

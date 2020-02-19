@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 Stream<QuerySnapshot> getMessageSnapshot(ChatId chatId) {
-  return getRoomReference(chatId).snapshots();
+  return getRoomReference(chatId).orderBy('timestamp').snapshots();
 }
 
 CollectionReference getRoomReference(ChatId chatId) {
@@ -12,10 +12,11 @@ CollectionReference getRoomReference(ChatId chatId) {
 }
 
 class ChatId {
-  ChatId({this.fromId, this.toId});
+  ChatId({this.fromId, this.toId, this.isSender});
 
   final int fromId;
   final int toId;
+  final bool isSender;
 
   String get chatRoomId => '$toId-$fromId';
 }

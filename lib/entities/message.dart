@@ -25,7 +25,8 @@ class Message {
       ? MessageType.message
       : photoUrl != null ? MessageType.photo : MessageType.unknown;
 
-  Map<String, dynamic> get map => {'message': message, 'photo_url': photoUrl};
+  Map<String, dynamic> get map =>
+      {'message': message, 'photo_url': photoUrl, 'timestamp': Timestamp.now()};
 }
 
 enum MessageType { message, photo, unknown }

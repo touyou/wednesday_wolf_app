@@ -25,7 +25,7 @@ class _ChatPageState extends State<ChatPage> {
         title: const Text('水曜日のオオカミくんには騙されない。'),
       ),
       body: _layoutBody(context),
-      floatingActionButton: isOsuzuBy(chatId)
+      floatingActionButton: chatId.isSender
           ? FloatingActionButton(
               onPressed: () {
                 showModalBottomSheet(
@@ -37,13 +37,17 @@ class _ChatPageState extends State<ChatPage> {
                         ListTile(
                           leading: Icon(Icons.chat_bubble),
                           title: const Text('メッセージ'),
-                          onTap: () =>
-                              Navigator.of(context).push(MaterialPageRoute(
-                            settings: const RouteSettings(name: '/sendMessage'),
-                            builder: (_) => SendMessagePage(
-                                reference: getRoomReference(chatId)),
-                            fullscreenDialog: true,
-                          )),
+                          onTap: () => Navigator.of(context)
+                              .push(
+                                MaterialPageRoute(
+                                  settings:
+                                      const RouteSettings(name: '/sendMessage'),
+                                  builder: (_) => SendMessagePage(
+                                      reference: getRoomReference(chatId)),
+                                  fullscreenDialog: true,
+                                ),
+                              )
+                              .then((value) => Navigator.of(context).pop()),
                         ),
                         ListTile(
                           leading: Icon(Icons.image),
@@ -99,8 +103,35 @@ class _ChatPageState extends State<ChatPage> {
             ? ListTile(
                 title: Text(message.message),
                 onTap: () => print(message),
+                onLongPress: () {
+                  if (chatId.isSender) {
+                    showDialogMessage(context,
+                            title: '投稿の削除', message: 'この投稿を削除しますか？')
+                        .then((value) {
+                      if (value) {
+                        message.reference.delete();
+                      }
+                    });
+                  }
+                },
               )
-            : Image.network(message.photoUrl),
+            : GestureDetector(
+                child: Image.network(message.photoUrl),
+                onLongPress: () {
+                  if (chatId.isSender) {
+                    showDialogMessage(context,
+                            title: '写真の削除', message: 'この写真を削除しますか？')
+                        .then((value) {
+                      if (value) {
+                        FirebaseStorage.instance
+                            .getReferenceFromUrl(message.photoUrl)
+                            .then((ref) => ref.delete());
+                        message.reference.delete();
+                      }
+                    });
+                  }
+                },
+              ),
       ),
     );
   }
