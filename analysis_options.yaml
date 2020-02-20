@@ -1,1 +1,6 @@
 include: package:pedantic_mono/analysis_options.yaml
+
+# Future.delayなどの暗黙的に型をdynamicにしている部分がアナリティクスでこけるので一時的に。
+analyzer:
+  strong-mode:
+    implicit-dynamic: true
