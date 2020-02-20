@@ -14,3 +14,7 @@ final List<WolfUser> users = [
 ];
 
 const icons = [];
+
+const Map<String, String> movieList = {
+  "ed": "https://firebasestorage.googleapis.com/v0/b/snsapp-1e277.appspot.com/o/ed.mp4?alt=media&token=aa07d0ac-4e93-4084-943f-bca8b9118a24"
+};

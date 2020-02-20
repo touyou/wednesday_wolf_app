@@ -23,6 +23,12 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('水曜日のオオカミくんには騙されない。'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.video_library),
+            onPressed: () => Navigator.of(context).pushNamed("/wolf_movie"),
+          )
+        ],
       ),
       body: _layoutBody(context),
     );
