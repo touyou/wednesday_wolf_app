@@ -38,7 +38,6 @@ class _HomePageState extends State<HomePage> {
     currentUser = ModalRoute.of(context).settings.arguments as FirebaseUser;
 
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(39, 39, 39, 1),
       body: Stack(children: [
         SizedBox.expand(
           child: FittedBox(
@@ -49,6 +48,13 @@ class _HomePageState extends State<HomePage> {
               child: VideoPlayer(_videoPlayerController),
             ),
           ),
+        ),
+        SizedBox.expand(
+          child: Container(color: const Color.fromRGBO(39, 39, 39, 0.5)),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 120),
+          child: Image.asset('images/splash_title.png'),
         ),
         Column(children: [
           const Spacer(),
