@@ -19,12 +19,18 @@ class _HomePageState extends State<HomePage> {
   VideoPlayerController _videoPlayerController;
 
   WolfUser get me => searchWolf(currentUser);
-  
+
   @override
   void initState() {
     super.initState();
-    
-    _videoPlayerController = VideoPlayerController.asset('videos/background.')
+
+    _videoPlayerController = VideoPlayerController.asset('videos/ed.mp4')
+      ..initialize().then((value) {
+        _videoPlayerController.play();
+        _videoPlayerController.setVolume(0);
+        _videoPlayerController.setLooping(true);
+        setState(() {});
+      });
   }
 
   @override
@@ -34,6 +40,16 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(39, 39, 39, 1),
       body: Stack(children: [
+        SizedBox.expand(
+          child: FittedBox(
+            fit: BoxFit.cover,
+            child: SizedBox(
+              width: _videoPlayerController.value.size?.width ?? 0,
+              height: _videoPlayerController.value.size?.height ?? 0,
+              child: VideoPlayer(_videoPlayerController),
+            ),
+          ),
+        ),
         Column(children: [
           const Spacer(),
           Stack(children: [
