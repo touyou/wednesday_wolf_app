@@ -3,15 +3,18 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:wednesday_wolf_app/common/constant.dart';
 import 'package:wednesday_wolf_app/common/utils.dart';
 import 'package:wednesday_wolf_app/entities/chat_room.dart';
 import 'package:wednesday_wolf_app/entities/message.dart';
+import 'package:wednesday_wolf_app/entities/wolf_user.dart';
 import 'package:wednesday_wolf_app/pages/send_message_page.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({Key key, this.myId}) : super(key: key);
+  const ChatPage({Key key, this.myId, this.opponent}) : super(key: key);
 
   final int myId;
+  final WolfUser opponent;
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -25,12 +28,28 @@ class _ChatPageState extends State<ChatPage> {
     chatIds = ModalRoute.of(context).settings.arguments as List<ChatId>;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('水曜日のオオカミくんには騙されない。'),
+      backgroundColor: WolfColors.baseBackground,
+      body: SafeArea(
+        top: false,
+        bottom: true,
+        child: Stack(children: [
+          Container(
+            decoration: BoxDecoration(color: WolfColors.baseBackground),
+            child: _layoutBody(context),
+          ),
+          IconButton(
+            padding: const EdgeInsets.only(top: 32),
+            icon: Icon(Icons.arrow_back),
+            color: WolfColors.whiteBackground,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ]),
       ),
-      body: _layoutBody(context),
       floatingActionButton: chatIds.any((chatId) => chatId.isSender)
           ? FloatingActionButton(
+              backgroundColor: WolfColors.mainColor,
               onPressed: () {
                 showModalBottomSheet<dynamic>(
                   context: context,
@@ -102,8 +121,41 @@ class _ChatPageState extends State<ChatPage> {
     final children =
         snapshot.map((data) => _buildListItem(context, data)).toList();
     return ListView(
-      padding: const EdgeInsets.only(top: 20),
-      children: children,
+      padding: const EdgeInsets.only(top: 0, bottom: 60),
+      children: <Widget>[
+            Hero(
+              tag: 'chatHeader${widget.opponent.id}',
+              child: Container(
+                height: 300,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    alignment: Alignment.topCenter,
+                    image: AssetImage(
+                        iconFiles[widget.opponent.id][widget.opponent.imageId]),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        stops: const [
+                          0.5,
+                          0.8,
+                          0.95
+                        ],
+                        colors: [
+                          Colors.transparent,
+                          WolfColors.baseBackground.withAlpha(80),
+                          WolfColors.baseBackground
+                        ]),
+                  ),
+                ),
+              ),
+            ),
+          ] +
+          children,
     );
   }
 
@@ -111,48 +163,72 @@ class _ChatPageState extends State<ChatPage> {
     return Padding(
       key: ValueKey(message.reference.documentID),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Container(
-        decoration: BoxDecoration(
-          border: isMyMessage(message.fromId)
-              ? Border.all(color: Colors.grey)
-              : Border.all(color: Colors.red),
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: message.type == MessageType.message
-            ? ListTile(
-                title: Text(message.message),
-                onTap: () => print(message),
-                onLongPress: () {
-                  if (isMyMessage(message.fromId)) {
-                    showDialogMessage(context,
-                            title: '投稿の削除', message: 'この投稿を削除しますか？')
-                        .then((value) {
-                      if (value) {
-                        message.reference.delete();
-                      }
-                    });
-                  }
-                },
-              )
-            : GestureDetector(
-                child: Image.network(message.photoUrl),
-                onLongPress: () {
-                  if (isMyMessage(message.fromId)) {
-                    showDialogMessage(context,
-                            title: '写真の削除', message: 'この写真を削除しますか？')
-                        .then((value) {
+      child: _layoutMessageRow(message),
+    );
+  }
+
+  Widget _layoutMessageRow(Message message) {
+    final isMe = isMyMessage(message.fromId);
+    final fromUser = chatIds
+        .firstWhere((element) => element.fromId == message.fromId)
+        .fromUser;
+    final icon = Container(
+      width: 48,
+      height: 48,
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(24)),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      child: Image.asset(iconFiles[fromUser.id][fromUser.imageId],
+          fit: BoxFit.cover),
+    );
+    final contents = Container(
+      constraints: const BoxConstraints(maxWidth: 250),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: WolfColors.whiteBackground,
+      ),
+      child: message.type == MessageType.message
+          ? GestureDetector(
+              child: Text(message.message),
+              onLongPress: () {
+                if (isMyMessage(message.fromId)) {
+                  showDialogMessage(context,
+                          title: '投稿の削除', message: 'この投稿を削除しますか？')
+                      .then((value) {
+                    if (value) {
+                      message.reference.delete();
+                    }
+                  });
+                }
+              },
+            )
+          : GestureDetector(
+              child: Image.network(message.photoUrl, fit: BoxFit.cover),
+              onLongPress: () {
+                if (isMyMessage(message.fromId)) {
+                  showDialogMessage(context,
+                          title: '写真の削除', message: 'この写真を削除しますか？')
+                      .then(
+                    (value) {
                       if (value) {
                         FirebaseStorage.instance
                             .getReferenceFromUrl(message.photoUrl)
                             .then((ref) => ref.delete());
                         message.reference.delete();
                       }
-                    });
-                  }
-                },
-              ),
-      ),
+                    },
+                  );
+                }
+              },
+            ),
     );
+    const spacer = SizedBox(width: 16);
+
+    return Row(
+        mainAxisAlignment:
+            isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: isMe ? [contents, spacer, icon] : [icon, spacer, contents]);
   }
 
   Future chooseFile() async {

@@ -26,9 +26,10 @@ class _HomePageState extends State<HomePage> {
 
     _videoPlayerController = VideoPlayerController.asset('videos/ed.mp4')
       ..initialize().then((value) {
-        _videoPlayerController.play();
-        _videoPlayerController.setVolume(0);
-        _videoPlayerController.setLooping(true);
+        _videoPlayerController
+          ..play()
+          ..setVolume(0)
+          ..setLooping(true);
         setState(() {});
       });
   }
@@ -38,66 +39,70 @@ class _HomePageState extends State<HomePage> {
     currentUser = ModalRoute.of(context).settings.arguments as FirebaseUser;
 
     return Scaffold(
-      body: Stack(children: [
-        SizedBox.expand(
-          child: FittedBox(
-            fit: BoxFit.cover,
-            child: SizedBox(
-              width: _videoPlayerController.value.size?.width ?? 0,
-              height: _videoPlayerController.value.size?.height ?? 0,
-              child: VideoPlayer(_videoPlayerController),
-            ),
-          ),
-        ),
-        SizedBox.expand(
-          child: Container(color: const Color.fromRGBO(39, 39, 39, 0.5)),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 120),
-          child: Image.asset('images/splash_title.png'),
-        ),
-        Column(children: [
-          const Spacer(),
-          Stack(children: [
-            Container(
-              height: 360,
-              decoration: const BoxDecoration(
-                color: Color.fromRGBO(221, 224, 227, 1),
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(10),
-                ),
+      body: SafeArea(
+        top: false,
+        bottom: true,
+        child: Stack(children: [
+          SizedBox.expand(
+            child: FittedBox(
+              fit: BoxFit.cover,
+              child: SizedBox(
+                width: _videoPlayerController.value.size?.width ?? 0,
+                height: _videoPlayerController.value.size?.height ?? 0,
+                child: VideoPlayer(_videoPlayerController),
               ),
             ),
-            Column(
-              children: [
-                const SizedBox(height: 16),
-                Container(
-                  height: 5,
-                  width: 120,
-                  decoration: BoxDecoration(
-                    color: const Color.fromRGBO(196, 196, 196, 1),
-                    borderRadius: BorderRadius.circular(2.5),
+          ),
+          SizedBox.expand(
+            child: Container(color: const Color.fromRGBO(39, 39, 39, 0.5)),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 120),
+            child: Image.asset('images/splash_title.png'),
+          ),
+          Column(children: [
+            const Spacer(),
+            Stack(children: [
+              Container(
+                height: 360,
+                decoration: const BoxDecoration(
+                  color: WolfColors.baseBackground,
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(10),
                   ),
                 ),
-                Container(
-                  height: 260,
-                  child: _layoutListBody(context),
-                ),
-                Container(
-                  height: 100,
-                  decoration: const BoxDecoration(
-                    color: Color.fromRGBO(245, 245, 245, 1),
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(10),
+              ),
+              Column(
+                children: [
+                  const SizedBox(height: 16),
+                  Container(
+                    height: 5,
+                    width: 120,
+                    decoration: BoxDecoration(
+                      color: const Color.fromRGBO(196, 196, 196, 1),
+                      borderRadius: BorderRadius.circular(2.5),
                     ),
                   ),
-                  child: _layoutProfileBody(context),
-                )
-              ],
-            ),
+                  Container(
+                    height: 260,
+                    child: _layoutListBody(context),
+                  ),
+                  Container(
+                    height: 100,
+                    decoration: const BoxDecoration(
+                      color: WolfColors.whiteBackground,
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(10),
+                      ),
+                    ),
+                    child: _layoutProfileBody(context),
+                  )
+                ],
+              ),
+            ]),
           ]),
         ]),
-      ]),
+      ),
     );
   }
 
@@ -179,12 +184,20 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
     final children = <Widget>[];
+    WolfUser myUser;
+    for (final data in snapshot) {
+      final user = WolfUser.fromSnapshot(data);
+      if (user.id == me.id) {
+        myUser = user;
+        break;
+      }
+    }
     for (final data in snapshot) {
       final user = WolfUser.fromSnapshot(data);
       if (!isOsuzu(user, me)) {
         continue;
       }
-      children.add(_buildListItem(context, data));
+      children.add(_buildListItem(context, data, myUser));
     }
 
     return ListView(
@@ -194,36 +207,43 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
+  Widget _buildListItem(
+      BuildContext context, DocumentSnapshot data, WolfUser myUser) {
     final user = WolfUser.fromSnapshot(data);
 
     return Padding(
       key: ValueKey(user.id),
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: GestureDetector(
-        child: Container(
-          constraints: BoxConstraints.tight(const Size(150, 200)),
+        child: Hero(
+          tag: 'chatHeader${user.id}',
           child: Card(
             elevation: 5,
             clipBehavior: Clip.antiAliasWithSaveLayer,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
             ),
-            child: Image.asset(
-              iconFiles[user.id][user.imageId],
-              fit: BoxFit.cover,
+            child: Container(
+              width: 150,
+              height: 200,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(iconFiles[user.id][user.imageId]),
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
           ),
         ),
         onTap: () => Navigator.of(context).push<dynamic>(
           MaterialPageRoute<dynamic>(
-            builder: (_) => ChatPage(myId: me.id),
+            builder: (_) => ChatPage(myId: myUser.id, opponent: user),
             settings: RouteSettings(
               name: '/chat',
               arguments: [
                 me.id != 9
-                    ? ChatId(fromId: me.id, toId: user.id, isSender: true)
-                    : ChatId(fromId: user.id, toId: me.id, isSender: false)
+                    ? ChatId(fromUser: myUser, toUser: user, isSender: true)
+                    : ChatId(fromUser: user, toUser: myUser, isSender: false)
               ],
             ),
           ),

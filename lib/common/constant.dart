@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:wednesday_wolf_app/entities/wolf_user.dart';
 
 final List<WolfUser> users = [
@@ -25,3 +27,9 @@ final List<List<String>> iconFiles = [
   ['images/apple1.jpg', 'images/apple2.jpg'],
   ['images/godiva1.jpg', 'images/godiva2.jpg'],
 ];
+
+class WolfColors {
+  static const baseBackground = Color.fromRGBO(221, 224, 227, 1);
+  static const whiteBackground = Color.fromRGBO(245, 245, 245, 1);
+  static const mainColor = Color.fromRGBO(43, 79, 131, 1);
+}
