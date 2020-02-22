@@ -17,6 +17,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   FirebaseUser currentUser;
   VideoPlayerController _videoPlayerController;
+  bool isShowDetails;
 
   WolfUser get me => searchWolf(currentUser);
 
@@ -24,6 +25,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
+    isShowDetails = false;
     _videoPlayerController = VideoPlayerController.asset('videos/ed.mp4')
       ..initialize().then((value) {
         _videoPlayerController
@@ -64,7 +66,7 @@ class _HomePageState extends State<HomePage> {
             const Spacer(),
             Stack(children: [
               Container(
-                height: 360,
+                height: isShowDetails ? 440 : 360,
                 decoration: const BoxDecoration(
                   color: WolfColors.baseBackground,
                   borderRadius: BorderRadius.vertical(
@@ -74,13 +76,28 @@ class _HomePageState extends State<HomePage> {
               ),
               Column(
                 children: [
-                  const SizedBox(height: 16),
-                  Container(
-                    height: 5,
-                    width: 120,
-                    decoration: BoxDecoration(
-                      color: const Color.fromRGBO(196, 196, 196, 1),
-                      borderRadius: BorderRadius.circular(2.5),
+                  FlatButton(
+                    onPressed: () {
+                      setState(() {
+                        isShowDetails = !isShowDetails;
+                      });
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      child: Column(
+                        children: <Widget>[
+                          const SizedBox(height: 16),
+                          Container(
+                            height: 5,
+                            width: 120,
+                            decoration: BoxDecoration(
+                              color: const Color.fromRGBO(196, 196, 196, 1),
+                              borderRadius: BorderRadius.circular(2.5),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                        ],
+                      ),
                     ),
                   ),
                   Container(
@@ -88,14 +105,23 @@ class _HomePageState extends State<HomePage> {
                     child: _layoutListBody(context),
                   ),
                   Container(
-                    height: 100,
+                    height: isShowDetails ? 180 : 100,
+                    padding: const EdgeInsets.only(top: 16),
                     decoration: const BoxDecoration(
                       color: WolfColors.whiteBackground,
                       borderRadius: BorderRadius.vertical(
                         top: Radius.circular(10),
                       ),
                     ),
-                    child: _layoutProfileBody(context),
+                    child: Column(
+                      children: isShowDetails
+                          ? [
+                              _layoutProfileBody(context),
+                              const SizedBox(height: 16),
+                              _layoutButtons(),
+                            ]
+                          : [_layoutProfileBody(context)],
+                    ),
                   )
                 ],
               ),
@@ -104,6 +130,27 @@ class _HomePageState extends State<HomePage> {
         ]),
       ),
     );
+  }
+
+  Widget iconAndText(Image image, String text) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [image, Text(text)],
+    );
+  }
+
+  Widget _layoutButtons() {
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      FlatButton(
+          onPressed: () {},
+          child: iconAndText(Image.asset('images/user_icon.png'), '個人設定')),
+      FlatButton(
+          onPressed: () {},
+          child: iconAndText(Image.asset('images/gift_icon.png'), 'スペシャル')),
+      FlatButton(
+          onPressed: () {},
+          child: iconAndText(Image.asset('images/info_icon.png'), 'アプリ情報')),
+    ]);
   }
 
   Widget _layoutProfileBody(BuildContext context) {

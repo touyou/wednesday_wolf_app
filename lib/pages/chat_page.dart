@@ -121,7 +121,7 @@ class _ChatPageState extends State<ChatPage> {
       stream: getMessageSnapshot(chatIds[0]),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const LinearProgressIndicator();
+          return _buildList(context, <Message>[]);
         }
         if (chatIds.length > 1) {
           final documents = snapshot.data.documents;
@@ -129,7 +129,7 @@ class _ChatPageState extends State<ChatPage> {
             stream: getMessageSnapshot(chatIds[1]),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return const LinearProgressIndicator();
+                return _buildList(context, <Message>[]);
               }
               return _buildList(context,
                   _convertMessageList(documents + snapshot.data.documents));
