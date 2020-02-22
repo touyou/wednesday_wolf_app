@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -43,91 +44,96 @@ class _LoginPageState extends State<LoginPage> {
   Widget _layoutBody() {
     return Form(
       key: _formKey,
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            const SizedBox(height: 32),
-            Image.asset(
-              'images/login_hero.png',
-              height: 200,
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              autofocus: true,
-              textInputAction: TextInputAction.next,
-              controller: emailInputController,
-              validator: (value) {
-                return value.isEmpty ? '必須入力です。' : null;
-              },
-              decoration: InputDecoration(
-                enabledBorder: normalOutlineBorder,
-                focusedBorder: normalOutlineBorder,
-                errorBorder: errorOutlineBorder,
-                focusedErrorBorder: errorOutlineBorder,
-                filled: true,
-                fillColor: const Color.fromRGBO(235, 235, 235, 1),
-                hintText: 'nickname@okamikun.jp',
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              const SizedBox(height: 32),
+              Image.asset(
+                'images/login_hero.png',
+                height: 200,
               ),
-              onFieldSubmitted: (v) {
-                FocusScope.of(context).requestFocus(focus);
-              },
-            ),
-            const SizedBox(height: 24),
-            TextFormField(
-              focusNode: focus,
-              controller: passwordInputController,
-              obscureText: passwordVisible,
-              validator: (value) {
-                return value.isEmpty ? '必須入力です。' : null;
-              },
-              decoration: InputDecoration(
-                enabledBorder: normalOutlineBorder,
-                focusedBorder: normalOutlineBorder,
-                errorBorder: errorOutlineBorder,
-                focusedErrorBorder: errorOutlineBorder,
-                filled: true,
-                fillColor: const Color.fromRGBO(235, 235, 235, 1),
-                hintText: 'password',
-                suffixIcon: IconButton(
-                  icon: passwordVisible
-                      ? Image.asset('images/eye_open.png')
-                      : Image.asset('images/eye_close.png'),
-                  onPressed: () {
-                    setState(() {
-                      passwordVisible = !passwordVisible;
-                    });
-                  },
+              const SizedBox(height: 16),
+              TextFormField(
+                autofocus: true,
+                textInputAction: TextInputAction.next,
+                controller: emailInputController,
+                validator: (value) {
+                  return value.isEmpty ? '必須入力です。' : null;
+                },
+                decoration: InputDecoration(
+                  enabledBorder: normalOutlineBorder,
+                  focusedBorder: normalOutlineBorder,
+                  errorBorder: errorOutlineBorder,
+                  focusedErrorBorder: errorOutlineBorder,
+                  filled: true,
+                  fillColor: const Color.fromRGBO(235, 235, 235, 1),
+                  hintText: 'nickname@okamikun.jp',
                 ),
-              ),
-            ),
-            const SizedBox(height: 60),
-            Center(
-              child: RaisedButton(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 16,
-                  horizontal: 24,
-                ),
-                child: Image.asset('images/login_button.png'),
-                color: const Color.fromRGBO(43, 79, 131, 1),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                onPressed: () {
-                  final email = emailInputController.text;
-                  final password = passwordInputController.text;
-                  if (_formKey.currentState.validate()) {
-                    return _signIn(email, password).then((result) {
-                      Navigator.of(context).pushReplacementNamed('/home',
-                          arguments: result.user);
-                    });
-                  }
-                  return null;
+                onFieldSubmitted: (v) {
+                  FocusScope.of(context).requestFocus(focus);
                 },
               ),
-            )
-          ],
+              const SizedBox(height: 24),
+              TextFormField(
+                focusNode: focus,
+                controller: passwordInputController,
+                obscureText: passwordVisible,
+                validator: (value) {
+                  return value.isEmpty ? '必須入力です。' : null;
+                },
+                decoration: InputDecoration(
+                  enabledBorder: normalOutlineBorder,
+                  focusedBorder: normalOutlineBorder,
+                  errorBorder: errorOutlineBorder,
+                  focusedErrorBorder: errorOutlineBorder,
+                  filled: true,
+                  fillColor: const Color.fromRGBO(235, 235, 235, 1),
+                  hintText: 'password',
+                  suffixIcon: IconButton(
+                    icon: passwordVisible
+                        ? Image.asset('images/eye_open.png')
+                        : Image.asset('images/eye_close.png'),
+                    onPressed: () {
+                      setState(() {
+                        passwordVisible = !passwordVisible;
+                      });
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 60),
+              Center(
+                child: RaisedButton(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 16,
+                    horizontal: 24,
+                  ),
+                  child: Image.asset('images/login_button.png'),
+                  color: const Color.fromRGBO(43, 79, 131, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  onPressed: () {
+                    final email = emailInputController.text;
+                    final password = passwordInputController.text;
+                    if (_formKey.currentState.validate()) {
+                      return _signIn(email, password).then((result) {
+                        Navigator.of(context).pushReplacementNamed('/home',
+                            arguments: result.user);
+                      });
+                    }
+                    return null;
+                  },
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
