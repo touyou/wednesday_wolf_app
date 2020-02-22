@@ -22,6 +22,7 @@ class _LoginPageState extends State<LoginPage> {
     borderRadius: BorderRadius.circular(5),
     borderSide: const BorderSide(color: Color(0xffef9a9a)),
   );
+  final FocusNode focus = FocusNode();
   bool passwordVisible = false;
 
   @override
@@ -54,6 +55,8 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 16),
             TextFormField(
+              autofocus: true,
+              textInputAction: TextInputAction.next,
               controller: emailInputController,
               validator: (value) {
                 return value.isEmpty ? '必須入力です。' : null;
@@ -67,9 +70,13 @@ class _LoginPageState extends State<LoginPage> {
                 fillColor: const Color.fromRGBO(235, 235, 235, 1),
                 hintText: 'nickname@okamikun.jp',
               ),
+              onFieldSubmitted: (v) {
+                FocusScope.of(context).requestFocus(focus);
+              },
             ),
             const SizedBox(height: 24),
             TextFormField(
+              focusNode: focus,
               controller: passwordInputController,
               obscureText: passwordVisible,
               validator: (value) {

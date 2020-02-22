@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:wednesday_wolf_app/common/constant.dart';
 import 'package:wednesday_wolf_app/entities/message.dart';
 
 class SendMessagePage extends StatefulWidget {
@@ -20,12 +21,21 @@ class SendMessagePage extends StatefulWidget {
 class _SendMessagePageState extends State<SendMessagePage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController messageInputController = TextEditingController();
+  final OutlineInputBorder normalOutlineBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(5),
+    borderSide: const BorderSide(style: BorderStyle.none),
+  );
+  final OutlineInputBorder errorOutlineBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(5),
+    borderSide: const BorderSide(color: Color(0xffef9a9a)),
+  );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('新規メッセージ'),
+        backgroundColor: WolfColors.mainColor,
       ),
       body: _layoutBody(context),
       floatingActionButton: FloatingActionButton(
@@ -44,24 +54,32 @@ class _SendMessagePageState extends State<SendMessagePage> {
           }
         },
         child: Icon(Icons.send),
+        backgroundColor: WolfColors.mainColor,
       ),
     );
   }
 
   Widget _layoutBody(BuildContext context) {
-    return Container(
-      child: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: TextField(
-              controller: messageInputController,
-              minLines: 10,
-              maxLines: 100,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+    return SizedBox.expand(
+      child: Container(
+        color: WolfColors.baseBackground,
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: TextField(
+                autofocus: true,
+                controller: messageInputController,
+                minLines: 10,
+                maxLines: 100,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: WolfColors.whiteBackground,
+                  enabledBorder: normalOutlineBorder,
+                  focusedBorder: normalOutlineBorder,
+                  errorBorder: errorOutlineBorder,
+                  focusedErrorBorder: errorOutlineBorder,
                 ),
               ),
             ),
