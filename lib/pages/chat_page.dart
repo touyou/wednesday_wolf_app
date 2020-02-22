@@ -180,7 +180,15 @@ class _ChatPageState extends State<ChatPage> {
               ),
             ),
           ] +
-          children,
+          (children.isEmpty
+              ? <Widget>[
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Image.asset('images/nocontent.png'),
+                  )
+                ]
+              : children),
     );
   }
 
