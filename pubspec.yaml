@@ -32,6 +32,7 @@ dependencies:
   firebase_storage: any
   video_player: any
   async: any
+  progress_dialog: any
 
 dev_dependencies:
   flutter_test:

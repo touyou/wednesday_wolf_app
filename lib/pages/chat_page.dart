@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:wednesday_wolf_app/common/constant.dart';
 import 'package:wednesday_wolf_app/common/utils.dart';
 import 'package:wednesday_wolf_app/entities/chat_room.dart';
@@ -58,10 +59,12 @@ class _ChatPageState extends State<ChatPage> {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         ListTile(
-                          leading: Icon(Icons.chat_bubble),
-                          title: const Text('メッセージ'),
-                          onTap: () => Navigator.of(context)
-                              .push<dynamic>(
+                            leading: Icon(Icons.chat_bubble),
+                            title: const Text('メッセージ'),
+                            onTap: () {
+                              final progress = _makeSendingProgress()..show();
+                              Navigator.of(context)
+                                  .push<dynamic>(
                                 MaterialPageRoute<dynamic>(
                                   settings:
                                       const RouteSettings(name: '/sendMessage'),
@@ -72,13 +75,23 @@ class _ChatPageState extends State<ChatPage> {
                                   fullscreenDialog: true,
                                 ),
                               )
-                              .then((dynamic _) => Navigator.of(context).pop()),
-                        ),
+                                  .then(
+                                (dynamic _) {
+                                  progress.hide();
+                                  Navigator.of(context).pop();
+                                },
+                              );
+                            }),
                         ListTile(
                           leading: Icon(Icons.image),
                           title: const Text('画像'),
-                          onTap: () => chooseFile()
-                              .then((dynamic _) => Navigator.of(context).pop()),
+                          onTap: () {
+                            final progress = _makeSendingProgress()..show();
+                            chooseFile().then((dynamic _) {
+                              progress.hide();
+                              Navigator.of(context).pop();
+                            });
+                          },
                         )
                       ],
                     );
@@ -89,6 +102,18 @@ class _ChatPageState extends State<ChatPage> {
             )
           : null,
     );
+  }
+
+  ProgressDialog _makeSendingProgress() {
+    return ProgressDialog(context, type: ProgressDialogType.Normal)
+      ..style(
+        message: '送信中...',
+        borderRadius: 10,
+        backgroundColor: WolfColors.whiteBackground,
+        progressWidget: const CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation(WolfColors.mainColor),
+        ),
+      );
   }
 
   Widget _layoutBody(BuildContext context) {
