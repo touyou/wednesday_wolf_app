@@ -68,11 +68,18 @@ class _HomePageState extends State<HomePage> {
               Container(
                 height: isShowDetails ? 440 : 360,
                 decoration: const BoxDecoration(
-                  color: WolfColors.baseBackground,
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(10),
-                  ),
-                ),
+                    color: WolfColors.baseBackground,
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(10),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color.fromRGBO(46, 46, 46, 0.25),
+                        offset: Offset(0, -4),
+                        blurRadius: 12,
+                        spreadRadius: 3,
+                      )
+                    ]),
               ),
               Column(
                 children: [
@@ -86,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                       width: double.infinity,
                       child: Column(
                         children: <Widget>[
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 2),
                           Container(
                             height: 5,
                             width: 120,
@@ -95,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                               borderRadius: BorderRadius.circular(2.5),
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 4),
                         ],
                       ),
                     ),
@@ -248,7 +255,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     return ListView(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.only(top: 8, bottom: 16),
       scrollDirection: Axis.horizontal,
       children: children,
     );
