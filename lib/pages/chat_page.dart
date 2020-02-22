@@ -228,7 +228,11 @@ class _ChatPageState extends State<ChatPage> {
               },
             )
           : GestureDetector(
-              child: Image.network(message.photoUrl, fit: BoxFit.cover),
+              child: FadeInImage.assetNetwork(
+                placeholder: 'images/placeholder.png',
+                image: message.photoUrl,
+                fit: BoxFit.cover,
+              ),
               onLongPress: () {
                 if (isMyMessage(message.fromId)) {
                   showDialogMessage(context,
