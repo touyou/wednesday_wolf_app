@@ -23,7 +23,7 @@ class _SplashPageState extends State<SplashPage> {
       });
     });
 
-    Future.delayed(const Duration(seconds: 3)).then((value) {
+    Future<dynamic>.delayed(const Duration(seconds: 3)).then((dynamic value) {
       timer.cancel();
       _handleTimeout();
     });

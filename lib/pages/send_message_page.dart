@@ -4,9 +4,14 @@ import 'package:flutter/widgets.dart';
 import 'package:wednesday_wolf_app/entities/message.dart';
 
 class SendMessagePage extends StatefulWidget {
-  const SendMessagePage({this.reference});
+  const SendMessagePage({
+    Key key,
+    this.reference,
+    this.fromId,
+  }) : super(key: key);
 
   final CollectionReference reference;
+  final int fromId;
 
   @override
   _SendMessagePageState createState() => _SendMessagePageState();
@@ -27,8 +32,12 @@ class _SendMessagePageState extends State<SendMessagePage> {
         onPressed: () {
           if (messageInputController.text.isNotEmpty) {
             widget.reference
-                .add(Message.newMessage(message: messageInputController.text)
-                    .map)
+                .add(
+              Message.newMessage(
+                message: messageInputController.text,
+                fromId: widget.fromId,
+              ).map,
+            )
                 .then((value) {
               Navigator.of(context).pop();
             });

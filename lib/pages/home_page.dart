@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:wednesday_wolf_app/common/utils.dart';
 import 'package:wednesday_wolf_app/entities/chat_room.dart';
 import 'package:wednesday_wolf_app/entities/wolf_user.dart';
+import 'package:wednesday_wolf_app/pages/chat_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -71,10 +72,17 @@ class _HomePageState extends State<HomePage> {
         child: ListTile(
           title: Text(user.name),
           trailing: Text(user.email),
-          onTap: () => Navigator.of(context).pushNamed('/chat',
-              arguments: me.id != 9
-                  ? ChatId(fromId: user.id, toId: me.id, isSender: true)
-                  : ChatId(fromId: me.id, toId: user.id, isSender: false)),
+          onTap: () => Navigator.of(context).push<dynamic>(
+            MaterialPageRoute<dynamic>(
+              builder: (_) => ChatPage(myId: me.id),
+              settings: RouteSettings(
+                name: '/chat',
+                arguments: me.id != 9
+                    ? ChatId(fromId: me.id, toId: user.id, isSender: true)
+                    : ChatId(fromId: user.id, toId: me.id, isSender: false),
+              ),
+            ),
+          ),
         ),
       ),
     );

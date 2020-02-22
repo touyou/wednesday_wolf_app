@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:wednesday_wolf_app/entities/wolf_user.dart';
 
 final List<WolfUser> users = [
@@ -13,4 +15,4 @@ final List<WolfUser> users = [
   WolfUser(9, 'おすず', 'osuzu@okamikun.jp'),
 ];
 
-const icons = [];
+const icons = <Image>[];
