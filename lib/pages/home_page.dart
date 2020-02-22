@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:video_player/video_player.dart';
 import 'package:wednesday_wolf_app/common/constant.dart';
 import 'package:wednesday_wolf_app/common/utils.dart';
 import 'package:wednesday_wolf_app/entities/chat_room.dart';
@@ -15,8 +16,16 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   FirebaseUser currentUser;
+  VideoPlayerController _videoPlayerController;
 
   WolfUser get me => searchWolf(currentUser);
+  
+  @override
+  void initState() {
+    super.initState();
+    
+    _videoPlayerController = VideoPlayerController.asset('videos/background.')
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,51 +33,49 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(39, 39, 39, 1),
-      body: Column(
-        children: [
+      body: Stack(children: [
+        Column(children: [
           const Spacer(),
-          Stack(
-            children: [
-              Container(
-                height: 360,
-                decoration: const BoxDecoration(
-                  color: Color.fromRGBO(221, 224, 227, 1),
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(10),
-                  ),
+          Stack(children: [
+            Container(
+              height: 360,
+              decoration: const BoxDecoration(
+                color: Color.fromRGBO(221, 224, 227, 1),
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(10),
                 ),
               ),
-              Column(
-                children: [
-                  const SizedBox(height: 16),
-                  Container(
-                    height: 5,
-                    width: 120,
-                    decoration: BoxDecoration(
-                      color: const Color.fromRGBO(196, 196, 196, 1),
-                      borderRadius: BorderRadius.circular(2.5),
+            ),
+            Column(
+              children: [
+                const SizedBox(height: 16),
+                Container(
+                  height: 5,
+                  width: 120,
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(196, 196, 196, 1),
+                    borderRadius: BorderRadius.circular(2.5),
+                  ),
+                ),
+                Container(
+                  height: 260,
+                  child: _layoutListBody(context),
+                ),
+                Container(
+                  height: 100,
+                  decoration: const BoxDecoration(
+                    color: Color.fromRGBO(245, 245, 245, 1),
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(10),
                     ),
                   ),
-                  Container(
-                    height: 260,
-                    child: _layoutListBody(context),
-                  ),
-                  Container(
-                    height: 100,
-                    decoration: const BoxDecoration(
-                      color: Color.fromRGBO(245, 245, 245, 1),
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(10),
-                      ),
-                    ),
-                    child: _layoutProfileBody(context),
-                  )
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
+                  child: _layoutProfileBody(context),
+                )
+              ],
+            ),
+          ]),
+        ]),
+      ]),
     );
   }
 
