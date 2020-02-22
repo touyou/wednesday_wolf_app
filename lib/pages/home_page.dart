@@ -109,38 +109,51 @@ class _HomePageState extends State<HomePage> {
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const CircularProgressIndicator();
+          return _layoutProfileRow(null);
         }
 
         final myUser = WolfUser.fromSnapshot(snapshot.data.documents.first);
 
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(width: 36),
-            Container(
-              height: 70,
-              width: 70,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(35),
-              ),
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              child: Image.asset(
-                iconFiles[myUser.id][myUser.imageId],
-                fit: BoxFit.cover,
-              ),
-            ),
-            const SizedBox(width: 36),
-            Image.asset('images/prof_user.png', height: 36),
-            Text(myUser.name),
-            const SizedBox(width: 8),
-            Image.asset('images/prof_course.png', height: 36),
-            Text(myUser.course),
-            const Spacer(),
-          ],
-        );
+        return _layoutProfileRow(myUser);
       },
+    );
+  }
+
+  Widget _layoutProfileRow(WolfUser myUser) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const SizedBox(width: 36),
+        Container(
+          height: 70,
+          width: 70,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(35),
+          ),
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          child: myUser != null
+              ? Image.asset(
+                  iconFiles[myUser.id][myUser.imageId],
+                  fit: BoxFit.cover,
+                )
+              : AnimatedOpacity(
+                  duration: const Duration(milliseconds: 700),
+                  opacity: 0.5,
+                  child: Image.asset(
+                    'images/ookami-icon.png',
+                    fit: BoxFit.fitHeight,
+                  ),
+                ),
+        ),
+        const SizedBox(width: 36),
+        Image.asset('images/prof_user.png', height: 36),
+        Text(myUser?.name ?? 'ニックネーム'),
+        const SizedBox(width: 8),
+        Image.asset('images/prof_course.png', height: 36),
+        Text(myUser?.course ?? 'コース名'),
+        const Spacer(),
+      ],
     );
   }
 
@@ -149,7 +162,14 @@ class _HomePageState extends State<HomePage> {
       stream: Firestore.instance.collection('Users').snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const LinearProgressIndicator();
+          return AnimatedOpacity(
+            duration: const Duration(milliseconds: 700),
+            opacity: 0.5,
+            child: Image.asset(
+              'images/ookami-icon.png',
+              fit: BoxFit.fitHeight,
+            ),
+          );
         }
 
         return _buildList(context, snapshot.data.documents);
