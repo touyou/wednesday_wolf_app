@@ -42,6 +42,7 @@ class _SettingPageState extends State<SettingPage> {
           )
         ],
       ),
+      backgroundColor: WolfColors.baseBackground,
       body: SafeArea(
         top: true,
         bottom: true,

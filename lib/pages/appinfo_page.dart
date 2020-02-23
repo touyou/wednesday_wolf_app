@@ -7,6 +7,7 @@ class AppInfoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(backgroundColor: WolfColors.mainColor),
+      backgroundColor: WolfColors.baseBackground,
       body: SafeArea(
         top: true,
         bottom: true,
