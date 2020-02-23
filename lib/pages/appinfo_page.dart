@@ -38,6 +38,7 @@ class AppInfoPage extends StatelessWidget {
             SizedBox(height: 16),
             Text('企画・実装: 藤井陽介 a.k.a. とうよう', style: WolfTextStyle.minchoBlack),
             Text('実装協力: 田中郁弥 a.k.a. ふみっち', style: WolfTextStyle.minchoBlack),
+            Text('技術協力: 西村大河、秋田祥平', style: WolfTextStyle.minchoBlack),
             Text('素材提供: 鈴木まりん a.k.a. おすず', style: WolfTextStyle.minchoBlack),
           ],
         ),
