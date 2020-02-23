@@ -33,6 +33,7 @@ dependencies:
   video_player: any
   async: any
   progress_dialog: any
+  google_fonts: any
 
 dev_dependencies:
   flutter_test:

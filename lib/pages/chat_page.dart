@@ -222,7 +222,10 @@ class _ChatPageState extends State<ChatPage> {
       ),
       child: message.type == MessageType.message
           ? GestureDetector(
-              child: Text(message.message),
+              child: Text(
+                message.message,
+                style: WolfTextStyle.gothicBlackSmall,
+              ),
               onLongPress: () {
                 if (isMyMessage(message.fromId)) {
                   showDialogMessage(context,

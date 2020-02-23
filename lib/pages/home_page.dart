@@ -142,7 +142,7 @@ class _HomePageState extends State<HomePage> {
   Widget iconAndText(Widget image, String text) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: [image, Text(text)],
+      children: [image, Text(text, style: WolfTextStyle.gothicBlackSmall,)],
     );
   }
 
@@ -206,10 +206,16 @@ class _HomePageState extends State<HomePage> {
         ),
         const SizedBox(width: 36),
         Icon(Icons.person),
-        Text(myUser?.name ?? 'ニックネーム'),
+        Text(
+          myUser?.name ?? 'ニックネーム',
+          style: WolfTextStyle.gothicBlackSmall,
+        ),
         const SizedBox(width: 8),
         Icon(Icons.flag),
-        Text(myUser?.course ?? 'コース名'),
+        Text(
+          myUser?.course ?? 'コース名',
+          style: WolfTextStyle.gothicBlackSmall,
+        ),
         const Spacer(),
       ],
     );
