@@ -139,7 +139,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget iconAndText(Image image, String text) {
+  Widget iconAndText(Widget image, String text) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [image, Text(text)],
@@ -150,13 +150,12 @@ class _HomePageState extends State<HomePage> {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       FlatButton(
           onPressed: () {},
-          child: iconAndText(Image.asset('images/user_icon.png'), '個人設定')),
+          child: iconAndText(Icon(Icons.person_outline), '個人設定')),
+      FlatButton(
+          onPressed: () {}, child: iconAndText(Icon(Icons.redeem), 'スペシャル')),
       FlatButton(
           onPressed: () {},
-          child: iconAndText(Image.asset('images/gift_icon.png'), 'スペシャル')),
-      FlatButton(
-          onPressed: () {},
-          child: iconAndText(Image.asset('images/info_icon.png'), 'アプリ情報')),
+          child: iconAndText(Icon(Icons.info_outline), 'アプリ情報')),
     ]);
   }
 
@@ -206,10 +205,10 @@ class _HomePageState extends State<HomePage> {
                 ),
         ),
         const SizedBox(width: 36),
-        Image.asset('images/prof_user.png', height: 36),
+        Icon(Icons.person),
         Text(myUser?.name ?? 'ニックネーム'),
         const SizedBox(width: 8),
-        Image.asset('images/prof_course.png', height: 36),
+        Icon(Icons.flag),
         Text(myUser?.course ?? 'コース名'),
         const Spacer(),
       ],

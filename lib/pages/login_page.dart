@@ -92,8 +92,8 @@ class _LoginPageState extends State<LoginPage> {
                 hintText: 'password',
                 suffixIcon: IconButton(
                   icon: passwordVisible
-                      ? Image.asset('images/eye_open.png')
-                      : Image.asset('images/eye_close.png'),
+                      ? Icon(Icons.visibility)
+                      : Icon(Icons.visibility_off),
                   onPressed: () {
                     setState(() {
                       passwordVisible = !passwordVisible;
