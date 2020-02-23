@@ -230,12 +230,14 @@ class _HomePageState extends State<HomePage> {
         ),
         const SizedBox(width: 36),
         Icon(Icons.person),
+        const SizedBox(width: 4),
         Text(
           myUser?.name ?? 'ニックネーム',
           style: WolfTextStyle.gothicBlackSmall,
         ),
         const SizedBox(width: 8),
         Icon(Icons.flag),
+        const SizedBox(width: 4),
         Text(
           myUser?.course ?? 'コース名',
           style: WolfTextStyle.gothicBlackSmall,
@@ -313,6 +315,48 @@ class _HomePageState extends State<HomePage> {
                 image: DecorationImage(
                   image: AssetImage(iconFiles[user.id][user.imageId]),
                   fit: BoxFit.cover,
+                ),
+              ),
+              child: Container(
+                alignment: Alignment.bottomLeft,
+                padding: const EdgeInsets.only(bottom: 4),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: const [
+                      0.5,
+                      0.8,
+                      0.95,
+                    ],
+                    colors: [
+                      Colors.white12,
+                      Colors.white54,
+                      Colors.white70,
+                    ],
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Row(
+                      children: [
+                        const SizedBox(width: 4),
+                        Icon(Icons.person,
+                            size: 12, color: WolfColors.darkGray),
+                        const SizedBox(width: 2),
+                        Text(user.name, style: WolfTextStyle.gothicBlackName),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const SizedBox(width: 4),
+                        Icon(Icons.flag, size: 12, color: WolfColors.darkGray),
+                        const SizedBox(width: 2),
+                        Text(user.course, style: WolfTextStyle.gothicBlackName),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),

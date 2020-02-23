@@ -37,6 +37,7 @@ class WolfColors {
   static const mainColor = Color.fromRGBO(43, 79, 131, 1);
   static const shadowBlack = Color.fromRGBO(46, 46, 46, 0.25);
   static const overlayBlack = Color.fromRGBO(39, 39, 39, 0.5);
+  static const darkGray = Color.fromRGBO(30, 30, 30, 1);
 }
 
 class WolfTextStyle {
@@ -55,6 +56,12 @@ class WolfTextStyle {
     color: WolfColors.mainColor,
     fontSize: 24,
     fontWeight: FontWeight.bold,
+  );
+  static const TextStyle gothicBlackName = TextStyle(
+    fontFamily: 'NotoSansJP',
+    color: WolfColors.darkGray,
+    fontSize: 10,
+    fontWeight: FontWeight.w700,
   );
   static const TextStyle gothicBlackSmall = TextStyle(
     fontFamily: 'NotoSansJP',

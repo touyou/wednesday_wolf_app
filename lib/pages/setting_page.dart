@@ -108,6 +108,7 @@ class _SettingPageState extends State<SettingPage> {
         Radio(
             value: 0,
             groupValue: imageId,
+            activeColor: WolfColors.mainColor,
             onChanged: (int value) => setState(() {
                   imageId = value;
                 })),
@@ -115,6 +116,7 @@ class _SettingPageState extends State<SettingPage> {
         Radio(
             value: 1,
             groupValue: imageId,
+            activeColor: WolfColors.mainColor,
             onChanged: (int value) => setState(() {
                   imageId = value;
                 })),
