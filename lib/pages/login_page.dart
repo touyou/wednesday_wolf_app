@@ -89,6 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                 fillColor: WolfColors.lightGray,
                 hintText: 'password',
                 suffixIcon: IconButton(
+                  color: WolfColors.mainColor,
                   icon: passwordVisible
                       ? Icon(Icons.visibility)
                       : Icon(Icons.visibility_off),
