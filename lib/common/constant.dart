@@ -26,7 +26,7 @@ final List<List<String>> iconFiles = [
   ['images/renren1.jpg', 'images/renren2.jpg'],
   ['images/genei1.jpg', 'images/genei2.jpg'],
   ['images/apple1.jpg', 'images/apple2.jpg'],
-  ['images/godiva1.jpg', 'images/godiva2.jpg'],
+  ['images/osuzu1.jpg', 'images/osuzu2.jpg'],
 ];
 
 class WolfColors {
