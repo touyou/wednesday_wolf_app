@@ -7,6 +7,7 @@ import 'package:wednesday_wolf_app/common/constant.dart';
 import 'package:wednesday_wolf_app/common/utils.dart';
 import 'package:wednesday_wolf_app/entities/chat_room.dart';
 import 'package:wednesday_wolf_app/entities/wolf_user.dart';
+import 'package:wednesday_wolf_app/pages/appinfo_page.dart';
 import 'package:wednesday_wolf_app/pages/chat_page.dart';
 import 'package:wednesday_wolf_app/pages/setting_page.dart';
 
@@ -159,9 +160,17 @@ class _HomePageState extends State<HomePage> {
           },
           child: iconAndText(Icon(Icons.person_outline), '個人設定')),
       FlatButton(
-          onPressed: () {}, child: iconAndText(Icon(Icons.redeem), 'スペシャル')),
+          onPressed: null, child: iconAndText(Icon(Icons.redeem), 'スペシャル')),
       FlatButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).push<dynamic>(
+              MaterialPageRoute<dynamic>(
+                settings: const RouteSettings(name: '/appinfo'),
+                builder: (_) => AppInfoPage(),
+                fullscreenDialog: true,
+              ),
+            );
+          },
           child: iconAndText(Icon(Icons.info_outline), 'アプリ情報')),
     ]);
   }

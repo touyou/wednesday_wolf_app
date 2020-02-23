@@ -19,12 +19,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: any
-  disposable_provider: any
-  rxdart: any
+#  disposable_provider: any
+#  rxdart: any
   connectivity: any
   cloud_firestore: any
   firebase_auth: any
@@ -33,7 +35,6 @@ dependencies:
   video_player: any
   async: any
   progress_dialog: any
-  google_fonts: any
 
 dev_dependencies:
   flutter_test:
@@ -89,3 +90,34 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  fonts:
+    - family: NotoSansJP
+      fonts:
+        - asset: google_fonts/NotoSansJP-Thin.otf
+          weight: 100
+        - asset: google_fonts/NotoSansJP-Light.otf
+          weight: 300
+        - asset: google_fonts/NotoSansJP-Regular.otf
+          weight: 400
+        - asset: google_fonts/NotoSansJP-Medium.otf
+          weight: 500
+        - asset: google_fonts/NotoSansJP-Bold.otf
+          weight: 700
+        - asset: google_fonts/NotoSansJP-Black.otf
+          weight: 900
+    - family: NotoSerifJP
+      fonts:
+        - asset: google_fonts/NotoSerifJP-ExtraLight.otf
+          weight: 200
+        - asset: google_fonts/NotoSerifJP-Light.otf
+          weight: 300
+        - asset: google_fonts/NotoSerifJP-Regular.otf
+          weight: 400
+        - asset: google_fonts/NotoSerifJP-Medium.otf
+          weight: 500
+        - asset: google_fonts/NotoSerifJP-SemiBold.otf
+          weight: 600
+        - asset: google_fonts/NotoSerifJP-Bold.otf
+          weight: 700
+        - asset: google_fonts/NotoSerifJP-Black.otf
+          weight: 900

@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:wednesday_wolf_app/entities/wolf_user.dart';
 
 final List<WolfUser> users = [
@@ -40,17 +39,30 @@ class WolfColors {
   static const overlayBlack = Color.fromRGBO(39, 39, 39, 0.5);
 }
 
-// ignore: avoid_classes_with_only_static_members
 class WolfTextStyle {
-  static final TextStyle minchoWhite = GoogleFonts.sawarabiMincho(
+  static const TextStyle minchoWhite = TextStyle(
+    fontFamily: 'NotoSerifJP',
     color: WolfColors.whiteBackground,
     fontSize: 18,
   );
-  static final TextStyle minchoBlack = GoogleFonts.sawarabiMincho(
+  static const TextStyle minchoBlack = TextStyle(
+    fontFamily: 'NotoSerifJP',
     color: WolfColors.mainColor,
     fontSize: 18,
   );
-  static final TextStyle gothicBlackSmall = GoogleFonts.notoSans(fontSize: 16);
-  static final TextStyle gothicBlackTitle =
-      GoogleFonts.notoSans(fontSize: 18, fontWeight: FontWeight.bold);
+  static const TextStyle minchoBlackTitleBig = TextStyle(
+    fontFamily: 'NotoSerifJP',
+    color: WolfColors.mainColor,
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+  );
+  static const TextStyle gothicBlackSmall = TextStyle(
+    fontFamily: 'NotoSansJP',
+    fontSize: 16,
+  );
+  static const TextStyle gothicBlackTitle = TextStyle(
+    fontFamily: 'NotoSansJP',
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+  );
 }
