@@ -8,6 +8,7 @@ import 'package:wednesday_wolf_app/common/utils.dart';
 import 'package:wednesday_wolf_app/entities/chat_room.dart';
 import 'package:wednesday_wolf_app/entities/wolf_user.dart';
 import 'package:wednesday_wolf_app/pages/chat_page.dart';
+import 'package:wednesday_wolf_app/pages/setting_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -56,7 +57,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           SizedBox.expand(
-            child: Container(color: const Color.fromRGBO(39, 39, 39, 0.5)),
+            child: Container(color: WolfColors.overlayBlack),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 120),
@@ -74,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Color.fromRGBO(46, 46, 46, 0.25),
+                        color: WolfColors.shadowBlack,
                         offset: Offset(0, -4),
                         blurRadius: 12,
                         spreadRadius: 3,
@@ -98,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                             height: 5,
                             width: 120,
                             decoration: BoxDecoration(
-                              color: const Color.fromRGBO(196, 196, 196, 1),
+                              color: WolfColors.mediumGray,
                               borderRadius: BorderRadius.circular(2.5),
                             ),
                           ),
@@ -120,15 +121,7 @@ class _HomePageState extends State<HomePage> {
                         top: Radius.circular(10),
                       ),
                     ),
-                    child: Column(
-                      children: isShowDetails
-                          ? [
-                              _layoutProfileBody(context),
-                              const SizedBox(height: 16),
-                              _layoutButtons(),
-                            ]
-                          : [_layoutProfileBody(context)],
-                    ),
+                    child: _layoutProfileBody(context),
                   )
                 ],
               ),
@@ -142,14 +135,28 @@ class _HomePageState extends State<HomePage> {
   Widget iconAndText(Widget image, String text) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: [image, Text(text, style: WolfTextStyle.gothicBlackSmall,)],
+      children: [
+        image,
+        Text(
+          text,
+          style: WolfTextStyle.gothicBlackSmall,
+        )
+      ],
     );
   }
 
-  Widget _layoutButtons() {
+  Widget _layoutButtons(WolfUser myUser) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       FlatButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).push<dynamic>(
+              MaterialPageRoute<dynamic>(
+                settings: const RouteSettings(name: '/settings'),
+                builder: (_) => SettingPage(me: myUser),
+                fullscreenDialog: true,
+              ),
+            );
+          },
           child: iconAndText(Icon(Icons.person_outline), '個人設定')),
       FlatButton(
           onPressed: () {}, child: iconAndText(Icon(Icons.redeem), 'スペシャル')),
@@ -172,7 +179,15 @@ class _HomePageState extends State<HomePage> {
 
         final myUser = WolfUser.fromSnapshot(snapshot.data.documents.first);
 
-        return _layoutProfileRow(myUser);
+        return Column(
+          children: isShowDetails
+              ? [
+                  _layoutProfileRow(myUser),
+                  const SizedBox(height: 16),
+                  _layoutButtons(myUser),
+                ]
+              : [_layoutProfileRow(myUser)],
+        );
       },
     );
   }

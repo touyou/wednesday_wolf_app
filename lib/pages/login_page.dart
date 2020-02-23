@@ -50,10 +50,7 @@ class _LoginPageState extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             const SizedBox(height: 32),
-            Image.asset(
-              'images/login_hero.png',
-              height: 200,
-            ),
+            Image.asset('images/login_hero.png', height: 200),
             const SizedBox(height: 16),
             TextFormField(
               autofocus: true,

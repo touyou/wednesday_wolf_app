@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:flutter/src/painting/text_style.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wednesday_wolf_app/entities/wolf_user.dart';
 
@@ -34,7 +34,10 @@ class WolfColors {
   static const baseBackground = Color.fromRGBO(221, 224, 227, 1);
   static const whiteBackground = Color.fromRGBO(245, 245, 245, 1);
   static const lightGray = Color.fromRGBO(235, 235, 235, 1);
+  static const mediumGray = Color.fromRGBO(196, 196, 196, 1);
   static const mainColor = Color.fromRGBO(43, 79, 131, 1);
+  static const shadowBlack = Color.fromRGBO(46, 46, 46, 0.25);
+  static const overlayBlack = Color.fromRGBO(39, 39, 39, 0.5);
 }
 
 // ignore: avoid_classes_with_only_static_members
@@ -43,5 +46,11 @@ class WolfTextStyle {
     color: WolfColors.whiteBackground,
     fontSize: 18,
   );
+  static final TextStyle minchoBlack = GoogleFonts.sawarabiMincho(
+    color: WolfColors.mainColor,
+    fontSize: 18,
+  );
   static final TextStyle gothicBlackSmall = GoogleFonts.notoSans(fontSize: 16);
+  static final TextStyle gothicBlackTitle =
+      GoogleFonts.notoSans(fontSize: 18, fontWeight: FontWeight.bold);
 }

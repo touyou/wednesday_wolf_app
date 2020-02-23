@@ -35,7 +35,7 @@ class _ChatPageState extends State<ChatPage> {
         bottom: true,
         child: Stack(children: [
           Container(
-            decoration: BoxDecoration(color: WolfColors.baseBackground),
+            decoration: const BoxDecoration(color: WolfColors.baseBackground),
             child: _layoutBody(context),
           ),
           IconButton(
