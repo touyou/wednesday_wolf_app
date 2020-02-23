@@ -14,6 +14,7 @@ final List<WolfUser> users = [
   WolfUser(7, 'ジーニー', 'genie@okamikun.jp'),
   WolfUser(8, 'あっぷる', 'apple@okamikun.jp'),
   WolfUser(9, 'おすず', 'osuzu@okamikun.jp'),
+  WolfUser(10, '村人', 'murabito@okamikun.jp'),
 ];
 
 final List<List<String>> iconFiles = [
@@ -27,6 +28,7 @@ final List<List<String>> iconFiles = [
   ['images/genei1.jpg', 'images/genei2.jpg'],
   ['images/apple1.jpg', 'images/apple2.jpg'],
   ['images/osuzu1.jpg', 'images/osuzu2.jpg'],
+  ['images/murabito.jpg'],
 ];
 
 class WolfColors {

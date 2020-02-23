@@ -5,7 +5,6 @@ import 'package:flutter/widgets.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wednesday_wolf_app/common/constant.dart';
 import 'package:wednesday_wolf_app/common/utils.dart';
-import 'package:wednesday_wolf_app/entities/chat_room.dart';
 import 'package:wednesday_wolf_app/entities/wolf_user.dart';
 import 'package:wednesday_wolf_app/pages/appinfo_page.dart';
 import 'package:wednesday_wolf_app/pages/chat_page.dart';
@@ -43,6 +42,7 @@ class _HomePageState extends State<HomePage> {
     currentUser = ModalRoute.of(context).settings.arguments as FirebaseUser;
 
     return Scaffold(
+      backgroundColor: WolfColors.whiteBackground,
       body: SafeArea(
         top: false,
         bottom: true,
@@ -147,18 +147,23 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _layoutButtons(WolfUser myUser) {
-    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      FlatButton(
-          onPressed: () {
-            Navigator.of(context).push<dynamic>(
-              MaterialPageRoute<dynamic>(
-                settings: const RouteSettings(name: '/settings'),
-                builder: (_) => SettingPage(me: myUser),
-                fullscreenDialog: true,
-              ),
-            );
-          },
-          child: iconAndText(Icon(Icons.person_outline), '個人設定')),
+    var children = <Widget>[];
+    if (myUser.id != 10) {
+      children = [
+        FlatButton(
+            onPressed: () {
+              Navigator.of(context).push<dynamic>(
+                MaterialPageRoute<dynamic>(
+                  settings: const RouteSettings(name: '/settings'),
+                  builder: (_) => SettingPage(me: myUser),
+                  fullscreenDialog: true,
+                ),
+              );
+            },
+            child: iconAndText(Icon(Icons.person_outline), '個人設定')),
+      ];
+    }
+    children += [
       FlatButton(
           onPressed: null, child: iconAndText(Icon(Icons.redeem), 'スペシャル')),
       FlatButton(
@@ -172,7 +177,8 @@ class _HomePageState extends State<HomePage> {
             );
           },
           child: iconAndText(Icon(Icons.info_outline), 'アプリ情報')),
-    ]);
+    ];
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: children);
   }
 
   Widget _layoutProfileBody(BuildContext context) {
@@ -249,7 +255,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _layoutListBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('Users').snapshots(),
+      stream: Firestore.instance.collection('Users').orderBy('id').snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return AnimatedOpacity(
@@ -367,11 +373,7 @@ class _HomePageState extends State<HomePage> {
             builder: (_) => ChatPage(myId: myUser.id, opponent: user),
             settings: RouteSettings(
               name: '/chat',
-              arguments: [
-                me.id != 9
-                    ? ChatId(fromUser: myUser, toUser: user, isSender: true)
-                    : ChatId(fromUser: user, toUser: myUser, isSender: false)
-              ],
+              arguments: getChatList(user, me),
             ),
           ),
         ),

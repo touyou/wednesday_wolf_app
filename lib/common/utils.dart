@@ -49,9 +49,21 @@ bool isOsuzu(WolfUser user, WolfUser me) {
   if (user.id == me.id) {
     return false;
   }
-  return user.id == 9 || me.id == 9;
+
+  return user.id >= 9 || me.id >= 9;
 }
 
-bool isOsuzuBy(ChatId chatId) {
-  return chatId.toId == 9;
+List<ChatId> getChatList(WolfUser user, WolfUser me) {
+  switch (me.id) {
+    case 9:
+      return [
+        user.id == 10
+            ? ChatId(fromUser: me, toUser: user, isSender: true)
+            : ChatId(fromUser: user, toUser: me, isSender: false)
+      ];
+    case 10:
+      return [ChatId(fromUser: user, toUser: me, isSender: false)];
+    default:
+      return [ChatId(fromUser: me, toUser: user, isSender: true)];
+  }
 }
