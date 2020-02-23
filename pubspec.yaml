@@ -32,7 +32,7 @@ dependencies:
   firebase_auth: any
   image_picker: any
   firebase_storage: any
-  video_player: any
+  video_player: ^0.10.4+2
   async: any
   progress_dialog: any
 
