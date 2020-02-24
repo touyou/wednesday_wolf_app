@@ -32,7 +32,10 @@ dependencies:
   firebase_auth: any
   image_picker: any
   firebase_storage: any
-  video_player: ^0.10.4+2
+  video_player: #^0.10.4+2
+    git:
+      url: git://github.com/crazedvic/plugins.git
+      path: packages/video_player/video_player
   async: any
   progress_dialog: any
 

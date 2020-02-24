@@ -365,10 +365,12 @@ packages:
   video_player:
     dependency: "direct main"
     description:
-      name: video_player
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.10.8+1"
+      path: "packages/video_player/video_player"
+      ref: HEAD
+      resolved-ref: "48b935cae8dccbd0eb10178cb87af8b48dc5c409"
+      url: "git://github.com/crazedvic/plugins.git"
+    source: git
+    version: "0.10.7"
   video_player_platform_interface:
     dependency: transitive
     description:
