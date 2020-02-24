@@ -35,7 +35,7 @@ class _ChatPageState extends State<ChatPage> {
         bottom: true,
         child: Stack(children: [
           Container(
-            decoration: BoxDecoration(color: WolfColors.baseBackground),
+            decoration: const BoxDecoration(color: WolfColors.baseBackground),
             child: _layoutBody(context),
           ),
           IconButton(
@@ -55,45 +55,48 @@ class _ChatPageState extends State<ChatPage> {
                 showModalBottomSheet<dynamic>(
                   context: context,
                   builder: (context) {
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        ListTile(
-                            leading: Icon(Icons.chat_bubble),
-                            title: const Text('メッセージ'),
+                    return SafeArea(
+                      bottom: true,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          ListTile(
+                              leading: Icon(Icons.chat_bubble),
+                              title: const Text('メッセージ'),
+                              onTap: () {
+                                final progress = _makeSendingProgress()..show();
+                                Navigator.of(context)
+                                    .push<dynamic>(
+                                  MaterialPageRoute<dynamic>(
+                                    settings: const RouteSettings(
+                                        name: '/sendMessage'),
+                                    builder: (_) => SendMessagePage(
+                                      reference: getRoomReference(chatIds[0]),
+                                      fromId: widget.myId,
+                                    ),
+                                    fullscreenDialog: true,
+                                  ),
+                                )
+                                    .then(
+                                  (dynamic _) {
+                                    progress.hide();
+                                    Navigator.of(context).pop();
+                                  },
+                                );
+                              }),
+                          ListTile(
+                            leading: Icon(Icons.image),
+                            title: const Text('画像'),
                             onTap: () {
                               final progress = _makeSendingProgress()..show();
-                              Navigator.of(context)
-                                  .push<dynamic>(
-                                MaterialPageRoute<dynamic>(
-                                  settings:
-                                      const RouteSettings(name: '/sendMessage'),
-                                  builder: (_) => SendMessagePage(
-                                    reference: getRoomReference(chatIds[0]),
-                                    fromId: widget.myId,
-                                  ),
-                                  fullscreenDialog: true,
-                                ),
-                              )
-                                  .then(
-                                (dynamic _) {
-                                  progress.hide();
-                                  Navigator.of(context).pop();
-                                },
-                              );
-                            }),
-                        ListTile(
-                          leading: Icon(Icons.image),
-                          title: const Text('画像'),
-                          onTap: () {
-                            final progress = _makeSendingProgress()..show();
-                            chooseFile().then((dynamic _) {
-                              progress.hide();
-                              Navigator.of(context).pop();
-                            });
-                          },
-                        )
-                      ],
+                              _chooseFile().then((dynamic _) {
+                                progress.hide();
+                                Navigator.of(context).pop();
+                              });
+                            },
+                          )
+                        ],
+                      ),
                     );
                   },
                 );
@@ -201,7 +204,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _layoutMessageRow(Message message) {
-    final isMe = isMyMessage(message.fromId);
+    final isMe = _isMyMessage(message.fromId);
     final fromUser = chatIds
         .firstWhere((element) => element.fromId == message.fromId)
         .fromUser;
@@ -222,9 +225,12 @@ class _ChatPageState extends State<ChatPage> {
       ),
       child: message.type == MessageType.message
           ? GestureDetector(
-              child: Text(message.message),
+              child: Text(
+                message.message,
+                style: WolfTextStyle.gothicBlackSmall,
+              ),
               onLongPress: () {
-                if (isMyMessage(message.fromId)) {
+                if (_isMyMessage(message.fromId)) {
                   showDialogMessage(context,
                           title: '投稿の削除', message: 'この投稿を削除しますか？')
                       .then((value) {
@@ -242,7 +248,7 @@ class _ChatPageState extends State<ChatPage> {
                 fit: BoxFit.cover,
               ),
               onLongPress: () {
-                if (isMyMessage(message.fromId)) {
+                if (_isMyMessage(message.fromId)) {
                   showDialogMessage(context,
                           title: '写真の削除', message: 'この写真を削除しますか？')
                       .then(
@@ -268,9 +274,12 @@ class _ChatPageState extends State<ChatPage> {
         children: isMe ? [contents, spacer, icon] : [icon, spacer, contents]);
   }
 
-  Future chooseFile() async {
+  Future _chooseFile() async {
     await ImagePicker.pickImage(source: ImageSource.gallery)
         .then((imageFile) async {
+      if (imageFile == null) {
+        return;
+      }
       final fileExtension = imageFile.path.split('.').last;
       final documentReference = getRoomReference(chatIds[0]).document();
       final storageReference = FirebaseStorage.instance
@@ -287,7 +296,7 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  bool isMyMessage(int id) {
+  bool _isMyMessage(int id) {
     return id == widget.myId;
   }
 

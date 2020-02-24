@@ -5,9 +5,10 @@ import 'package:flutter/widgets.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wednesday_wolf_app/common/constant.dart';
 import 'package:wednesday_wolf_app/common/utils.dart';
-import 'package:wednesday_wolf_app/entities/chat_room.dart';
 import 'package:wednesday_wolf_app/entities/wolf_user.dart';
+import 'package:wednesday_wolf_app/pages/appinfo_page.dart';
 import 'package:wednesday_wolf_app/pages/chat_page.dart';
+import 'package:wednesday_wolf_app/pages/setting_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -41,6 +42,7 @@ class _HomePageState extends State<HomePage> {
     currentUser = ModalRoute.of(context).settings.arguments as FirebaseUser;
 
     return Scaffold(
+      backgroundColor: WolfColors.whiteBackground,
       body: SafeArea(
         top: false,
         bottom: true,
@@ -56,7 +58,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           SizedBox.expand(
-            child: Container(color: const Color.fromRGBO(39, 39, 39, 0.5)),
+            child: Container(color: WolfColors.overlayBlack),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 120),
@@ -74,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Color.fromRGBO(46, 46, 46, 0.25),
+                        color: WolfColors.shadowBlack,
                         offset: Offset(0, -4),
                         blurRadius: 12,
                         spreadRadius: 3,
@@ -98,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                             height: 5,
                             width: 120,
                             decoration: BoxDecoration(
-                              color: const Color.fromRGBO(196, 196, 196, 1),
+                              color: WolfColors.mediumGray,
                               borderRadius: BorderRadius.circular(2.5),
                             ),
                           ),
@@ -120,15 +122,7 @@ class _HomePageState extends State<HomePage> {
                         top: Radius.circular(10),
                       ),
                     ),
-                    child: Column(
-                      children: isShowDetails
-                          ? [
-                              _layoutProfileBody(context),
-                              const SizedBox(height: 16),
-                              _layoutButtons(),
-                            ]
-                          : [_layoutProfileBody(context)],
-                    ),
+                    child: _layoutProfileBody(context),
                   )
                 ],
               ),
@@ -139,25 +133,52 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget iconAndText(Image image, String text) {
+  Widget iconAndText(Widget image, String text) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: [image, Text(text)],
+      children: [
+        image,
+        Text(
+          text,
+          style: WolfTextStyle.gothicBlackSmall,
+        )
+      ],
     );
   }
 
-  Widget _layoutButtons() {
-    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+  Widget _layoutButtons(WolfUser myUser) {
+    var children = <Widget>[];
+    if (myUser.id != 10) {
+      children = [
+        FlatButton(
+            onPressed: () {
+              Navigator.of(context).push<dynamic>(
+                MaterialPageRoute<dynamic>(
+                  settings: const RouteSettings(name: '/settings'),
+                  builder: (_) => SettingPage(me: myUser),
+                  fullscreenDialog: true,
+                ),
+              );
+            },
+            child: iconAndText(Icon(Icons.person_outline), '個人設定')),
+      ];
+    }
+    children += [
       FlatButton(
-          onPressed: () {},
-          child: iconAndText(Image.asset('images/user_icon.png'), '個人設定')),
+          onPressed: null, child: iconAndText(Icon(Icons.redeem), 'スペシャル')),
       FlatButton(
-          onPressed: () {},
-          child: iconAndText(Image.asset('images/gift_icon.png'), 'スペシャル')),
-      FlatButton(
-          onPressed: () {},
-          child: iconAndText(Image.asset('images/info_icon.png'), 'アプリ情報')),
-    ]);
+          onPressed: () {
+            Navigator.of(context).push<dynamic>(
+              MaterialPageRoute<dynamic>(
+                settings: const RouteSettings(name: '/appinfo'),
+                builder: (_) => AppInfoPage(),
+                fullscreenDialog: true,
+              ),
+            );
+          },
+          child: iconAndText(Icon(Icons.info_outline), 'アプリ情報')),
+    ];
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: children);
   }
 
   Widget _layoutProfileBody(BuildContext context) {
@@ -173,7 +194,15 @@ class _HomePageState extends State<HomePage> {
 
         final myUser = WolfUser.fromSnapshot(snapshot.data.documents.first);
 
-        return _layoutProfileRow(myUser);
+        return Column(
+          children: isShowDetails
+              ? [
+                  _layoutProfileRow(myUser),
+                  const SizedBox(height: 16),
+                  _layoutButtons(myUser),
+                ]
+              : [_layoutProfileRow(myUser)],
+        );
       },
     );
   }
@@ -206,11 +235,19 @@ class _HomePageState extends State<HomePage> {
                 ),
         ),
         const SizedBox(width: 36),
-        Image.asset('images/prof_user.png', height: 36),
-        Text(myUser?.name ?? 'ニックネーム'),
+        Icon(Icons.person),
+        const SizedBox(width: 4),
+        Text(
+          myUser?.name ?? 'ニックネーム',
+          style: WolfTextStyle.gothicBlackSmall,
+        ),
         const SizedBox(width: 8),
-        Image.asset('images/prof_course.png', height: 36),
-        Text(myUser?.course ?? 'コース名'),
+        Icon(Icons.flag),
+        const SizedBox(width: 4),
+        Text(
+          myUser?.course ?? 'コース名',
+          style: WolfTextStyle.gothicBlackSmall,
+        ),
         const Spacer(),
       ],
     );
@@ -218,7 +255,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _layoutListBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('Users').snapshots(),
+      stream: Firestore.instance.collection('Users').orderBy('id').snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return AnimatedOpacity(
@@ -286,6 +323,48 @@ class _HomePageState extends State<HomePage> {
                   fit: BoxFit.cover,
                 ),
               ),
+              child: Container(
+                alignment: Alignment.bottomLeft,
+                padding: const EdgeInsets.only(bottom: 4),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: const [
+                      0.5,
+                      0.8,
+                      0.95,
+                    ],
+                    colors: [
+                      Colors.white12,
+                      Colors.white54,
+                      Colors.white70,
+                    ],
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Row(
+                      children: [
+                        const SizedBox(width: 4),
+                        Icon(Icons.person,
+                            size: 12, color: WolfColors.darkGray),
+                        const SizedBox(width: 2),
+                        Text(user.name, style: WolfTextStyle.gothicBlackName),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const SizedBox(width: 4),
+                        Icon(Icons.flag, size: 12, color: WolfColors.darkGray),
+                        const SizedBox(width: 2),
+                        Text(user.course, style: WolfTextStyle.gothicBlackName),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -294,11 +373,7 @@ class _HomePageState extends State<HomePage> {
             builder: (_) => ChatPage(myId: myUser.id, opponent: user),
             settings: RouteSettings(
               name: '/chat',
-              arguments: [
-                me.id != 9
-                    ? ChatId(fromUser: myUser, toUser: user, isSender: true)
-                    : ChatId(fromUser: user, toUser: myUser, isSender: false)
-              ],
+              arguments: getChatList(user, me),
             ),
           ),
         ),

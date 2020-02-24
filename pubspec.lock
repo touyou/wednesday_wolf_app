@@ -106,13 +106,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.3"
-  disposable_provider:
-    dependency: "direct main"
-    description:
-      name: disposable_provider
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.1"
   firebase:
     dependency: transitive
     description:
@@ -181,6 +174,11 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.7.4"
+  flutter_localizations:
+    dependency: "direct main"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -226,6 +224,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.3+4"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.16.1"
   js:
     dependency: transitive
     description:
@@ -247,13 +252,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.8"
-  nested:
-    dependency: transitive
-    description:
-      name: nested
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.4"
   path:
     dependency: transitive
     description:
@@ -296,13 +294,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.1"
-  provider:
-    dependency: transitive
-    description:
-      name: provider
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.0.4"
   quiver:
     dependency: transitive
     description:
@@ -310,13 +301,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.5"
-  rxdart:
-    dependency: "direct main"
-    description:
-      name: rxdart
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.23.1"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -381,10 +365,12 @@ packages:
   video_player:
     dependency: "direct main"
     description:
-      name: video_player
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.10.8+1"
+      path: "packages/video_player/video_player"
+      ref: HEAD
+      resolved-ref: "48b935cae8dccbd0eb10178cb87af8b48dc5c409"
+      url: "git://github.com/crazedvic/plugins.git"
+    source: git
+    version: "0.10.7"
   video_player_platform_interface:
     dependency: transitive
     description:

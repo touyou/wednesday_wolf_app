@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:wednesday_wolf_app/common/constant.dart';
 import 'package:wednesday_wolf_app/common/utils.dart';
 
 class LoginPage extends StatefulWidget {
@@ -51,10 +52,7 @@ class _LoginPageState extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             const SizedBox(height: 32),
-            Image.asset(
-              'images/login_hero.png',
-              height: 200,
-            ),
+            Image.asset('images/login_hero.png', height: 200),
             const SizedBox(height: 16),
             TextFormField(
               autofocus: true,
@@ -69,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                 errorBorder: errorOutlineBorder,
                 focusedErrorBorder: errorOutlineBorder,
                 filled: true,
-                fillColor: const Color.fromRGBO(235, 235, 235, 1),
+                fillColor: WolfColors.lightGray,
                 hintText: 'nickname@okamikun.jp',
               ),
               onFieldSubmitted: (v) {
@@ -90,12 +88,13 @@ class _LoginPageState extends State<LoginPage> {
                 errorBorder: errorOutlineBorder,
                 focusedErrorBorder: errorOutlineBorder,
                 filled: true,
-                fillColor: const Color.fromRGBO(235, 235, 235, 1),
+                fillColor: WolfColors.lightGray,
                 hintText: 'password',
                 suffixIcon: IconButton(
+                  color: WolfColors.mainColor,
                   icon: passwordVisible
-                      ? Image.asset('images/eye_open.png')
-                      : Image.asset('images/eye_close.png'),
+                      ? Icon(Icons.visibility)
+                      : Icon(Icons.visibility_off),
                   onPressed: () {
                     setState(() {
                       passwordVisible = !passwordVisible;
@@ -111,8 +110,11 @@ class _LoginPageState extends State<LoginPage> {
                   vertical: 16,
                   horizontal: 24,
                 ),
-                child: Image.asset('images/login_button.png'),
-                color: const Color.fromRGBO(43, 79, 131, 1),
+                child: Text(
+                  'はじめる',
+                  style: WolfTextStyle.minchoWhite,
+                ),
+                color: WolfColors.mainColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
