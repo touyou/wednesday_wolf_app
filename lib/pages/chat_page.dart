@@ -89,7 +89,7 @@ class _ChatPageState extends State<ChatPage> {
                             title: const Text('画像'),
                             onTap: () {
                               final progress = _makeSendingProgress()..show();
-                              chooseFile().then((dynamic _) {
+                              _chooseFile().then((dynamic _) {
                                 progress.hide();
                                 Navigator.of(context).pop();
                               });
@@ -204,7 +204,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _layoutMessageRow(Message message) {
-    final isMe = isMyMessage(message.fromId);
+    final isMe = _isMyMessage(message.fromId);
     final fromUser = chatIds
         .firstWhere((element) => element.fromId == message.fromId)
         .fromUser;
@@ -230,7 +230,7 @@ class _ChatPageState extends State<ChatPage> {
                 style: WolfTextStyle.gothicBlackSmall,
               ),
               onLongPress: () {
-                if (isMyMessage(message.fromId)) {
+                if (_isMyMessage(message.fromId)) {
                   showDialogMessage(context,
                           title: '投稿の削除', message: 'この投稿を削除しますか？')
                       .then((value) {
@@ -248,7 +248,7 @@ class _ChatPageState extends State<ChatPage> {
                 fit: BoxFit.cover,
               ),
               onLongPress: () {
-                if (isMyMessage(message.fromId)) {
+                if (_isMyMessage(message.fromId)) {
                   showDialogMessage(context,
                           title: '写真の削除', message: 'この写真を削除しますか？')
                       .then(
@@ -274,7 +274,7 @@ class _ChatPageState extends State<ChatPage> {
         children: isMe ? [contents, spacer, icon] : [icon, spacer, contents]);
   }
 
-  Future chooseFile() async {
+  Future _chooseFile() async {
     await ImagePicker.pickImage(source: ImageSource.gallery)
         .then((imageFile) async {
       if (imageFile == null) {
@@ -296,7 +296,7 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  bool isMyMessage(int id) {
+  bool _isMyMessage(int id) {
     return id == widget.myId;
   }
 
