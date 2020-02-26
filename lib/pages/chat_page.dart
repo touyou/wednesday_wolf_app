@@ -229,17 +229,24 @@ class _ChatPageState extends State<ChatPage> {
                 message.message,
                 style: WolfTextStyle.gothicBlackSmall,
               ),
-              onLongPress: () {
-                if (_isMyMessage(message.fromId)) {
-                  showDialogMessage(context,
-                          title: '投稿の削除', message: 'この投稿を削除しますか？')
-                      .then((value) {
-                    if (value) {
-                      message.reference.delete();
-                    }
-                  });
-                }
-              },
+              onTap: _isMyMessage(message.fromId)
+                  ? () => Navigator.of(context).push<dynamic>(
+                        MaterialPageRoute<dynamic>(
+                          settings: const RouteSettings(name: '/sendMessage'),
+                          builder: (_) => SendMessagePage(message: message),
+                          fullscreenDialog: true,
+                        ),
+                      )
+                  : null,
+              onLongPress: _isMyMessage(message.fromId)
+                  ? () => showDialogMessage(context,
+                              title: '投稿の削除', message: 'この投稿を削除しますか？')
+                          .then((value) {
+                        if (value) {
+                          message.reference.delete();
+                        }
+                      })
+                  : null,
             )
           : GestureDetector(
               child: FadeInImage.assetNetwork(
@@ -247,22 +254,20 @@ class _ChatPageState extends State<ChatPage> {
                 image: message.photoUrl,
                 fit: BoxFit.cover,
               ),
-              onLongPress: () {
-                if (_isMyMessage(message.fromId)) {
-                  showDialogMessage(context,
-                          title: '写真の削除', message: 'この写真を削除しますか？')
-                      .then(
-                    (value) {
-                      if (value) {
-                        FirebaseStorage.instance
-                            .getReferenceFromUrl(message.photoUrl)
-                            .then((ref) => ref.delete());
-                        message.reference.delete();
-                      }
-                    },
-                  );
-                }
-              },
+              onLongPress: _isMyMessage(message.fromId)
+                  ? () => showDialogMessage(context,
+                              title: '写真の削除', message: 'この写真を削除しますか？')
+                          .then(
+                        (value) {
+                          if (value) {
+                            FirebaseStorage.instance
+                                .getReferenceFromUrl(message.photoUrl)
+                                .then((ref) => ref.delete());
+                            message.reference.delete();
+                          }
+                        },
+                      )
+                  : null,
             ),
     );
     const spacer = SizedBox(width: 16);

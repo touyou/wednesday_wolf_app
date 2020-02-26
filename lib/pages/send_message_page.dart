@@ -9,10 +9,12 @@ class SendMessagePage extends StatefulWidget {
     Key key,
     this.reference,
     this.fromId,
+    this.message,
   }) : super(key: key);
 
   final CollectionReference reference;
   final int fromId;
+  final Message message;
 
   @override
   _SendMessagePageState createState() => _SendMessagePageState();
@@ -31,6 +33,15 @@ class _SendMessagePageState extends State<SendMessagePage> {
   );
 
   @override
+  void initState() {
+    super.initState();
+
+    if (widget.message != null) {
+      messageInputController.text = widget.message.message;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -41,16 +52,20 @@ class _SendMessagePageState extends State<SendMessagePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (messageInputController.text.isNotEmpty) {
-            widget.reference
-                .add(
-              Message.newMessage(
-                message: messageInputController.text,
-                fromId: widget.fromId,
-              ).map,
-            )
-                .then((value) {
-              Navigator.of(context).pop();
-            });
+            if (widget.message != null) {
+              widget.message.reference.updateData(<String, dynamic>{
+                'message': messageInputController.text
+              }).then((value) => Navigator.of(context).pop());
+            } else {
+              widget.reference
+                  .add(
+                    Message.newMessage(
+                      message: messageInputController.text,
+                      fromId: widget.fromId,
+                    ).map,
+                  )
+                  .then((value) => Navigator.of(context).pop());
+            }
           }
         },
         child: Icon(Icons.send),
