@@ -316,32 +316,33 @@ class _HomePageState extends State<HomePage> {
       key: ValueKey(user.id),
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: GestureDetector(
-        child: CardWidget(
+        child: Hero(
           tag: 'chatHeader${user.id}',
-          backImage: AssetImage(iconFiles[user.id][user.imageId]),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Row(
-                children: [
-                  const SizedBox(width: 4),
-                  Icon(Icons.person,
-                      size: 12, color: WolfColors.darkGray),
-                  const SizedBox(width: 2),
-                  Text(user.name, style: WolfTextStyle.gothicBlackName),
-                ],
-              ),
-              Row(
-                children: [
-                  const SizedBox(width: 4),
-                  Icon(Icons.flag, size: 12, color: WolfColors.darkGray),
-                  const SizedBox(width: 2),
-                  Text(user.course, style: WolfTextStyle.gothicBlackName),
-                ],
-              ),
-            ],
+          child: CardWidget(
+            backImage: AssetImage(iconFiles[user.id][user.imageId]),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Row(
+                  children: [
+                    const SizedBox(width: 4),
+                    Icon(Icons.person,
+                        size: 12, color: WolfColors.darkGray),
+                    const SizedBox(width: 2),
+                    Text(user.name, style: WolfTextStyle.gothicBlackName),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const SizedBox(width: 4),
+                    Icon(Icons.flag, size: 12, color: WolfColors.darkGray),
+                    const SizedBox(width: 2),
+                    Text(user.course, style: WolfTextStyle.gothicBlackName),
+                  ],
+                ),
+              ],
+            ),
           ),
-          cardSize: const Size(150, 200),
         ),
         onTap: () => Navigator.of(context).push<dynamic>(
           MaterialPageRoute<dynamic>(
