@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wednesday_wolf_app/common/constant.dart';
-import 'package:wednesday_wolf_app/pages/card_widget.dart';
+import 'package:wednesday_wolf_app/components/card_widget.dart';
 import 'package:wednesday_wolf_app/pages/watch_movie_page.dart';
 
 class AnotherStoryPage extends StatefulWidget {
