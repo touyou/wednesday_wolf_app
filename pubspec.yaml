@@ -14,7 +14,7 @@ description: Life is Tech ! Wednesday school 2019-2020 app.
 version: 1.0.0+1.0.0.5
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -31,6 +31,7 @@ dependencies:
   cloud_firestore: any
   firebase_auth: any
   image_picker: any
+  image_picker_saver: any
   firebase_storage: any
   video_player: #^0.10.4+2
     git:
@@ -38,6 +39,8 @@ dependencies:
       path: packages/video_player/video_player
   async: any
   progress_dialog: any
+  http: any
+  photo_view: any
 
 dev_dependencies:
   flutter_test:
