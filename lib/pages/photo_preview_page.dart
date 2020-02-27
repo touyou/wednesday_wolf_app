@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker_saver/image_picker_saver.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:wednesday_wolf_app/common/constant.dart';
 import 'package:wednesday_wolf_app/common/utils.dart';
 
@@ -38,10 +39,11 @@ class PhotoPreviewPage extends StatelessWidget {
       body: SizedBox.expand(
         child: Container(
           color: Colors.black,
-          child: FadeInImage.assetNetwork(
-            placeholder: 'images/placeholder.png',
-            image: photoUrl,
-            fit: BoxFit.contain,
+          child: PhotoView(
+            loadingBuilder: (context, event) {
+              return Image.asset('images/placeholder.png');
+            },
+            imageProvider: NetworkImage(photoUrl),
           ),
         ),
       ),
