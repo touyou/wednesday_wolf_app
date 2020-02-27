@@ -8,7 +8,7 @@ import 'package:wednesday_wolf_app/common/utils.dart';
 import 'package:wednesday_wolf_app/entities/wolf_user.dart';
 import 'package:wednesday_wolf_app/pages/another_story_page.dart';
 import 'package:wednesday_wolf_app/pages/appinfo_page.dart';
-import 'package:wednesday_wolf_app/pages/card_widget.dart';
+import 'package:wednesday_wolf_app/components/card_widget.dart';
 import 'package:wednesday_wolf_app/pages/chat_page.dart';
 import 'package:wednesday_wolf_app/pages/setting_page.dart';
 
