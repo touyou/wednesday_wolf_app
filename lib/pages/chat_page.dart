@@ -9,6 +9,7 @@ import 'package:wednesday_wolf_app/common/utils.dart';
 import 'package:wednesday_wolf_app/entities/chat_room.dart';
 import 'package:wednesday_wolf_app/entities/message.dart';
 import 'package:wednesday_wolf_app/entities/wolf_user.dart';
+import 'package:wednesday_wolf_app/pages/photo_preview_page.dart';
 import 'package:wednesday_wolf_app/pages/send_message_page.dart';
 
 class ChatPage extends StatefulWidget {
@@ -254,6 +255,16 @@ class _ChatPageState extends State<ChatPage> {
                 image: message.photoUrl,
                 fit: BoxFit.cover,
               ),
+              onTap: () {
+                Navigator.of(context).push<dynamic>(
+                  MaterialPageRoute<dynamic>(
+                    settings: const RouteSettings(name: '/photoPreview'),
+                    builder: (_) =>
+                        PhotoPreviewPage(photoUrl: message.photoUrl),
+                    fullscreenDialog: true,
+                  ),
+                );
+              },
               onLongPress: _isMyMessage(message.fromId)
                   ? () => showDialogMessage(context,
                               title: '写真の削除', message: 'この写真を削除しますか？')
