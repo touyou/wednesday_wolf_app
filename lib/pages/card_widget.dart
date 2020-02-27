@@ -2,53 +2,48 @@ import 'package:flutter/material.dart';
 
 class CardWidget extends StatelessWidget {
 
-  final String tag;
   final AssetImage backImage;
   final Widget child;
-  final Size cardSize;
 
-  CardWidget({this.tag, this.backImage, this.child, this.cardSize});
+  CardWidget({this.backImage, this.child});
 
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: tag,
-      child: Card(
-        elevation: 5,
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5),
+    return Card(
+      elevation: 5,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Container(
+        width: 150,
+        height: 200,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: backImage,
+            fit: BoxFit.cover,
+          ),
         ),
         child: Container(
-          width: cardSize.width,
-          height: cardSize.height,
+          alignment: Alignment.bottomLeft,
+          padding: const EdgeInsets.only(bottom: 4),
           decoration: BoxDecoration(
-            image: DecorationImage(
-              image: backImage,
-              fit: BoxFit.cover,
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: const [
+                0.5,
+                0.8,
+                0.95,
+              ],
+              colors: [
+                Colors.white12,
+                Colors.white54,
+                Colors.white70,
+              ],
             ),
           ),
-          child: Container(
-            alignment: Alignment.bottomLeft,
-            padding: const EdgeInsets.only(bottom: 4),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: const [
-                  0.5,
-                  0.8,
-                  0.95,
-                ],
-                colors: [
-                  Colors.white12,
-                  Colors.white54,
-                  Colors.white70,
-                ],
-              ),
-            ),
-            child: child,
-          ),
+          child: child,
         ),
       ),
     );
