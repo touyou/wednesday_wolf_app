@@ -37,9 +37,11 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(242, 242, 242, 1),
-      body: GestureDetector(onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
-      }, child: _layoutBody()),
+      body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: _layoutBody()),
     );
   }
 
@@ -110,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                   vertical: 16,
                   horizontal: 24,
                 ),
-                child: Text(
+                child: const Text(
                   'はじめる',
                   style: WolfTextStyle.minchoWhite,
                 ),

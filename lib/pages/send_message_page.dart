@@ -48,6 +48,7 @@ class _SendMessagePageState extends State<SendMessagePage> {
         title: const Text('新規メッセージ'),
         backgroundColor: WolfColors.mainColor,
       ),
+      backgroundColor: WolfColors.baseBackground,
       body: _layoutBody(context),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
