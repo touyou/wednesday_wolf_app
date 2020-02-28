@@ -41,6 +41,7 @@ dependencies:
   progress_dialog: any
   http: any
   photo_view: any
+  url_launcher: any
 
 dev_dependencies:
   flutter_test:

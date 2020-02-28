@@ -6,7 +6,9 @@ import 'package:video_player/video_player.dart';
 import 'package:wednesday_wolf_app/common/constant.dart';
 import 'package:wednesday_wolf_app/common/utils.dart';
 import 'package:wednesday_wolf_app/entities/wolf_user.dart';
+import 'package:wednesday_wolf_app/pages/special_contents_page.dart';
 import 'package:wednesday_wolf_app/pages/appinfo_page.dart';
+import 'package:wednesday_wolf_app/components/card_widget.dart';
 import 'package:wednesday_wolf_app/pages/chat_page.dart';
 import 'package:wednesday_wolf_app/pages/setting_page.dart';
 
@@ -165,7 +167,15 @@ class _HomePageState extends State<HomePage> {
     }
     children += [
       FlatButton(
-          onPressed: null, child: iconAndText(Icon(Icons.redeem), 'スペシャル')),
+          onPressed: () {
+            Navigator.of(context).push<dynamic>(
+              MaterialPageRoute<dynamic>(
+                settings: const RouteSettings(name: "/another_story"),
+                builder: (_) => SpecialContentsPage(),
+                fullscreenDialog: true,
+              )
+            );
+          }, child: iconAndText(Icon(Icons.redeem), 'スペシャル')),
       FlatButton(
           onPressed: () {
             Navigator.of(context).push<dynamic>(
@@ -305,75 +315,39 @@ class _HomePageState extends State<HomePage> {
     return Padding(
       key: ValueKey(user.id),
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: GestureDetector(
-        child: Hero(
-          tag: 'chatHeader${user.id}',
-          child: Card(
-            elevation: 5,
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Container(
-              width: 150,
-              height: 200,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(iconFiles[user.id][user.imageId]),
-                  fit: BoxFit.cover,
-                ),
+      child: Hero(
+        tag: 'chatHeader${user.id}',
+        child: CardWidget(
+          backImage: AssetImage(iconFiles[user.id][user.imageId]),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Row(
+                children: [
+                  const SizedBox(width: 4),
+                  Icon(Icons.person,
+                      size: 12, color: WolfColors.darkGray),
+                  const SizedBox(width: 2),
+                  Text(user.name, style: WolfTextStyle.gothicBlackName),
+                ],
               ),
-              child: Container(
-                alignment: Alignment.bottomLeft,
-                padding: const EdgeInsets.only(bottom: 4),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: const [
-                      0.5,
-                      0.8,
-                      0.95,
-                    ],
-                    colors: [
-                      Colors.white12,
-                      Colors.white54,
-                      Colors.white70,
-                    ],
-                  ),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Row(
-                      children: [
-                        const SizedBox(width: 4),
-                        Icon(Icons.person,
-                            size: 12, color: WolfColors.darkGray),
-                        const SizedBox(width: 2),
-                        Text(user.name, style: WolfTextStyle.gothicBlackName),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        const SizedBox(width: 4),
-                        Icon(Icons.flag, size: 12, color: WolfColors.darkGray),
-                        const SizedBox(width: 2),
-                        Text(user.course, style: WolfTextStyle.gothicBlackName),
-                      ],
-                    ),
-                  ],
-                ),
+              Row(
+                children: [
+                  const SizedBox(width: 4),
+                  Icon(Icons.flag, size: 12, color: WolfColors.darkGray),
+                  const SizedBox(width: 2),
+                  Text(user.course, style: WolfTextStyle.gothicBlackName),
+                ],
               ),
-            ),
+            ],
           ),
-        ),
-        onTap: () => Navigator.of(context).push<dynamic>(
-          MaterialPageRoute<dynamic>(
-            builder: (_) => ChatPage(myId: myUser.id, opponent: user),
-            settings: RouteSettings(
-              name: '/chat',
-              arguments: getChatList(user, me),
+          onTap: () => Navigator.of(context).push<dynamic>(
+            MaterialPageRoute<dynamic>(
+              builder: (_) => ChatPage(myId: myUser.id, opponent: user),
+              settings: RouteSettings(
+                name: '/chat',
+                arguments: getChatList(user, me),
+              ),
             ),
           ),
         ),
