@@ -16,12 +16,21 @@ class _AnotherStoryPageState extends State<AnotherStoryPage> {
     "images/another1.jpg",
     "images/another2.jpg",
     "images/another3.jpg",
+    "images/ed_thumb.jpg"
   ];
 
   static const videoPathList = [
     "videos/another1.mov",
     "videos/another2.mov",
     "videos/another3.mov",
+    "videos/ed.mp4"
+  ];
+
+  static const storyTitleList = [
+    "AnotherStory #1",
+    "AnotherStory #2",
+    "AnotherStory #3",
+    "エンディング"
   ];
 
   List<VideoPlayerController> _videoPlayerList = [];
@@ -53,7 +62,12 @@ class _AnotherStoryPageState extends State<AnotherStoryPage> {
                   const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32),
               child: CardWidget(
                 backImage: AssetImage(thumbnailPathList[index]),
-                child: null,
+                child: Stack(
+                  alignment: Alignment.bottomLeft,
+                  children: <Widget>[
+                    Text(storyTitleList[index]),
+                  ],
+                ),
                 onTap: () {
                   Navigator.of(context)
                       .push<dynamic>(MaterialPageRoute<dynamic>(
