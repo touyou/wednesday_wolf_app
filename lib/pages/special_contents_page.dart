@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wednesday_wolf_app/common/constant.dart';
@@ -99,25 +100,29 @@ class _SpecialContentsPageState extends State<SpecialContentsPage> {
                     case SpecialContentType.localMovie:
                       final controller = VideoPlayerController.asset(
                           contents[index].contentURL);
-                      await controller.initialize();
                       await Navigator.of(context)
                           .push<dynamic>(MaterialPageRoute<dynamic>(
-                        settings: const RouteSettings(name: '/watchMovie'),
-                        builder: (_) => WatchMoviePage(controller),
-                        fullscreenDialog: true,
-                      ));
+                            settings: const RouteSettings(name: '/watchMovie'),
+                            builder: (_) => WatchMoviePage(controller),
+                            fullscreenDialog: true,
+                          ))
+                          .then((void _) =>
+                              SystemChrome.setPreferredOrientations(
+                                  [DeviceOrientation.portraitUp]));
                       break;
 
                     case SpecialContentType.networkMovie:
                       final controller = VideoPlayerController.network(
                           contents[index].contentURL);
-                      await controller.initialize();
                       await Navigator.of(context)
                           .push<dynamic>(MaterialPageRoute<dynamic>(
-                        settings: const RouteSettings(name: '/watchMovie'),
-                        builder: (_) => WatchMoviePage(controller),
-                        fullscreenDialog: true,
-                      ));
+                            settings: const RouteSettings(name: '/watchMovie'),
+                            builder: (_) => WatchMoviePage(controller),
+                            fullscreenDialog: true,
+                          ))
+                          .then((void _) =>
+                              SystemChrome.setPreferredOrientations(
+                                  [DeviceOrientation.portraitUp]));
                       break;
 
                     case SpecialContentType.webLink:

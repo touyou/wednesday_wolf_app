@@ -16,8 +16,12 @@ class _WatchMoviePageState extends State<WatchMoviePage> {
   @override
   void initState() {
     super.initState();
-    widget.playerController.play();
     SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
+    widget.playerController.initialize().then((value) {
+      widget.playerController.play();
+      widget.playerController.setLooping(true);
+      setState(() {});
+    });
   }
 
   @override
@@ -25,45 +29,51 @@ class _WatchMoviePageState extends State<WatchMoviePage> {
     final player = widget.playerController;
 
     return Scaffold(
-      backgroundColor: WolfColors.baseBackground,
+      backgroundColor: Colors.black,
       body: SafeArea(
         top: false,
+        left: true,
+        right: true,
         bottom: false,
-        left: false,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            AspectRatio(
-              aspectRatio: player.value.aspectRatio ?? 0,
-              child: VideoPlayer(player),
+            FittedBox(
+              fit: BoxFit.contain,
+              child: SizedBox(
+                width: widget.playerController.value.size?.width ?? 0,
+                height: widget.playerController.value.size?.height ?? 0,
+                child: VideoPlayer(player),
+              ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(4),
-                  child: IconButton(
+            const Spacer(),
+            Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  IconButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                     icon: Icon(Icons.close),
-                    color: WolfColors.darkGray,
+                    color: WolfColors.lightGray,
                   ),
-                ),
-                const Spacer(),
-                IconButton(
-                  iconSize: 32,
-                  onPressed: () {
-                    setState(() {
-                      player.value.isPlaying ? player.pause() : player.play();
-                    });
-                  },
-                  icon: player.value.isPlaying
-                      ? Icon(Icons.pause)
-                      : Icon(Icons.play_arrow),
-                  color: WolfColors.darkGray,
-                ),
-                const Spacer()
-              ],
+                  const Spacer(),
+                  IconButton(
+                    iconSize: 32,
+                    onPressed: () {
+                      setState(() {
+                        player.value.isPlaying ? player.pause() : player.play();
+                      });
+                    },
+                    icon: player.value.isPlaying
+                        ? Icon(Icons.pause)
+                        : Icon(Icons.play_arrow),
+                    color: WolfColors.lightGray,
+                  ),
+                  const Spacer()
+                ],
+              ),
             )
           ],
         ),
