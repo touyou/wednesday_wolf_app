@@ -7,7 +7,7 @@ import 'package:wednesday_wolf_app/common/constant.dart';
 import 'package:wednesday_wolf_app/components/card_widget.dart';
 import 'package:wednesday_wolf_app/pages/watch_movie_page.dart';
 
-enum SpecialContentType { Movie, WebLink, Playlist }
+enum SpecialContentType { LocalMovie, NetworkMovie, WebLink, Playlist }
 
 class SpecialContentModel {
   final String title;
@@ -40,33 +40,33 @@ class _SpecialContentsPageState extends State<SpecialContentsPage> {
     ),
     SpecialContentModel(
       title: "オープニング",
-      contentURL: "videos/https://wednesday-okamikun2.netlify.com/asset/video/op.mp4",
+      contentURL: "https://wednesday-okamikun2.netlify.com/asset/video/op.mp4",
       thumbnailURL: "images/op_thumb.jpg",
-      contentType: SpecialContentType.Movie,
+      contentType: SpecialContentType.NetworkMovie,
     ),
     SpecialContentModel(
       title: "エンディング",
       contentURL: "videos/ed.mp4",
       thumbnailURL: "images/ed_thumb.jpg",
-      contentType: SpecialContentType.Movie,
+      contentType: SpecialContentType.LocalMovie,
     ),
     SpecialContentModel(
       title: "AnotherStory #1",
       contentURL: "videos/another1.mov",
       thumbnailURL: "images/another1.jpg",
-      contentType: SpecialContentType.Movie,
+      contentType: SpecialContentType.LocalMovie,
     ),
     SpecialContentModel(
       title: "AnotherStory #2",
       contentURL: "videos/another2.mov",
       thumbnailURL: "images/another2.jpg",
-      contentType: SpecialContentType.Movie,
+      contentType: SpecialContentType.LocalMovie,
     ),
     SpecialContentModel(
       title: "AnotherStory #3",
       contentURL: "videos/another3.mov",
       thumbnailURL: "images/another3.jpg",
-      contentType: SpecialContentType.Movie,
+      contentType: SpecialContentType.LocalMovie,
     ),
     SpecialContentModel(
         title: "音楽プレイリスト",
@@ -109,8 +109,20 @@ class _SpecialContentsPageState extends State<SpecialContentsPage> {
                 ),
                 onTap: () async {
                   switch (contents[index].contentType) {
-                    case SpecialContentType.Movie:
+                    case SpecialContentType.LocalMovie:
                       final controller = VideoPlayerController.asset(
+                          contents[index].contentURL);
+                      await controller.initialize();
+                      Navigator.of(context)
+                          .push<dynamic>(MaterialPageRoute<dynamic>(
+                        settings: const RouteSettings(name: "/watch_movie"),
+                        builder: (_) => WatchMoviePage(controller),
+                        fullscreenDialog: true,
+                      ));
+                      break;
+
+                    case SpecialContentType.NetworkMovie:
+                      final controller = VideoPlayerController.network(
                           contents[index].contentURL);
                       await controller.initialize();
                       Navigator.of(context)
