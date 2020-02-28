@@ -66,7 +66,7 @@ class _SettingPageState extends State<SettingPage> {
                 const SizedBox(height: 32),
                 Image.asset('images/login_hero.png', height: 200),
                 const SizedBox(height: 16),
-                Center(
+                const Center(
                   child: Text('画像を選択', style: WolfTextStyle.gothicBlackTitle),
                 ),
                 _layoutImageRadio(),

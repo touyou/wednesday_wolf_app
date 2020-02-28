@@ -5,12 +5,12 @@ import 'package:flutter/widgets.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wednesday_wolf_app/common/constant.dart';
 import 'package:wednesday_wolf_app/common/utils.dart';
-import 'package:wednesday_wolf_app/entities/wolf_user.dart';
-import 'package:wednesday_wolf_app/pages/special_contents_page.dart';
-import 'package:wednesday_wolf_app/pages/appinfo_page.dart';
 import 'package:wednesday_wolf_app/components/card_widget.dart';
+import 'package:wednesday_wolf_app/entities/wolf_user.dart';
+import 'package:wednesday_wolf_app/pages/appinfo_page.dart';
 import 'package:wednesday_wolf_app/pages/chat_page.dart';
 import 'package:wednesday_wolf_app/pages/setting_page.dart';
+import 'package:wednesday_wolf_app/pages/special_contents_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -135,7 +135,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget iconAndText(Widget image, String text) {
+  Widget _iconAndText(Widget image, String text) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -162,20 +162,19 @@ class _HomePageState extends State<HomePage> {
                 ),
               );
             },
-            child: iconAndText(Icon(Icons.person_outline), '個人設定')),
+            child: _iconAndText(Icon(Icons.person_outline), '個人設定')),
       ];
     }
     children += [
       FlatButton(
           onPressed: () {
-            Navigator.of(context).push<dynamic>(
-              MaterialPageRoute<dynamic>(
-                settings: const RouteSettings(name: "/another_story"),
-                builder: (_) => SpecialContentsPage(),
-                fullscreenDialog: true,
-              )
-            );
-          }, child: iconAndText(Icon(Icons.redeem), 'スペシャル')),
+            Navigator.of(context).push<dynamic>(MaterialPageRoute<dynamic>(
+              settings: const RouteSettings(name: '/another_story'),
+              builder: (_) => SpecialContentsPage(),
+              fullscreenDialog: true,
+            ));
+          },
+          child: _iconAndText(Icon(Icons.redeem), 'スペシャル')),
       FlatButton(
           onPressed: () {
             Navigator.of(context).push<dynamic>(
@@ -186,7 +185,7 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           },
-          child: iconAndText(Icon(Icons.info_outline), 'アプリ情報')),
+          child: _iconAndText(Icon(Icons.info_outline), 'アプリ情報')),
     ];
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: children);
   }
@@ -325,8 +324,7 @@ class _HomePageState extends State<HomePage> {
               Row(
                 children: [
                   const SizedBox(width: 4),
-                  Icon(Icons.person,
-                      size: 12, color: WolfColors.darkGray),
+                  Icon(Icons.person, size: 12, color: WolfColors.darkGray),
                   const SizedBox(width: 2),
                   Text(user.name, style: WolfTextStyle.gothicBlackName),
                 ],
@@ -346,7 +344,7 @@ class _HomePageState extends State<HomePage> {
               builder: (_) => ChatPage(myId: myUser.id, opponent: user),
               settings: RouteSettings(
                 name: '/chat',
-                arguments: getChatList(user, me),
+                arguments: getChatList(user, myUser),
               ),
             ),
           ),
