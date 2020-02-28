@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CardWidget extends StatelessWidget {
+  const CardWidget({this.backImage, this.child, this.onTap});
 
   final AssetImage backImage;
   final Widget child;
   final Function() onTap;
-
-  CardWidget({this.backImage, this.child, this.onTap});
 
   @override
   Widget build(BuildContext context) {

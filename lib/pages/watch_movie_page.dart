@@ -4,9 +4,9 @@ import 'package:video_player/video_player.dart';
 import 'package:wednesday_wolf_app/common/constant.dart';
 
 class WatchMoviePage extends StatefulWidget {
-  final VideoPlayerController playerController;
+  const WatchMoviePage(this.playerController);
 
-  WatchMoviePage(this.playerController);
+  final VideoPlayerController playerController;
 
   @override
   _WatchMoviePageState createState() => _WatchMoviePageState();
@@ -25,6 +25,7 @@ class _WatchMoviePageState extends State<WatchMoviePage> {
     final player = widget.playerController;
 
     return Scaffold(
+      backgroundColor: WolfColors.baseBackground,
       body: SafeArea(
         top: false,
         bottom: false,
@@ -33,31 +34,35 @@ class _WatchMoviePageState extends State<WatchMoviePage> {
           children: <Widget>[
             AspectRatio(
               aspectRatio: player.value.aspectRatio ?? 0,
-              child: SizedBox.expand(
-                child: VideoPlayer(player),
-              ),
+              child: VideoPlayer(player),
             ),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Spacer(),
-                FlatButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Icon(Icons.close),
+                Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: Icon(Icons.close),
+                    color: WolfColors.darkGray,
+                  ),
                 ),
-                Spacer(),
-                FlatButton(
+                const Spacer(),
+                IconButton(
+                  iconSize: 32,
                   onPressed: () {
                     setState(() {
                       player.value.isPlaying ? player.pause() : player.play();
                     });
                   },
-                  child: player.value.isPlaying
+                  icon: player.value.isPlaying
                       ? Icon(Icons.pause)
                       : Icon(Icons.play_arrow),
+                  color: WolfColors.darkGray,
                 ),
-                Spacer()
+                const Spacer()
               ],
             )
           ],

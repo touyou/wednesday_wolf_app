@@ -70,11 +70,12 @@ class _SpecialContentsPageState extends State<SpecialContentsPage> {
         backgroundColor: WolfColors.mainColor,
       ),
       body: ListView.builder(
+          padding: const EdgeInsets.symmetric(vertical: 16),
           scrollDirection: Axis.vertical,
           itemCount: contents.length,
           itemBuilder: (context, index) {
             return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               child: CardWidget(
                 backImage: AssetImage(contents[index].thumbnailURL),
                 child: Stack(
