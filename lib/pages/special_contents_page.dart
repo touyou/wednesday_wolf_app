@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wednesday_wolf_app/common/constant.dart';
 import 'package:wednesday_wolf_app/components/card_widget.dart';
@@ -18,12 +19,12 @@ class SpecialContentModel {
       {this.title, this.contentURL, this.thumbnailURL, this.contentType});
 }
 
-class MovieListPage extends StatefulWidget {
+class SpecialContentsPage extends StatefulWidget {
   @override
-  _MovieListPageState createState() => _MovieListPageState();
+  _SpecialContentsPageState createState() => _SpecialContentsPageState();
 }
 
-class _MovieListPageState extends State<MovieListPage> {
+class _SpecialContentsPageState extends State<SpecialContentsPage> {
   static const contents = <SpecialContentModel>[
     SpecialContentModel(
       title: "Season1公式サイト",
@@ -75,24 +76,6 @@ class _MovieListPageState extends State<MovieListPage> {
         contentType: SpecialContentType.Playlist),
   ];
 
-  List<VideoPlayerController> _videoPlayerList = [];
-
-  @override
-  void initState() {
-    super.initState();
-    // 動画のみをフィルタ
-    contents
-        .where((content) => content.contentType == SpecialContentType.Movie)
-        .map((content) => content.contentURL)
-        .forEach((path) {
-      final player = VideoPlayerController.asset(path)
-        ..initialize().then((value) {
-          setState(() {});
-        });
-      _videoPlayerList.add(player);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,27 +96,43 @@ class _MovieListPageState extends State<MovieListPage> {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        SizedBox(width: 4,),
-                        Text(contents[index].title, style: WolfTextStyle.gothicBlackTitle,),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          contents[index].title,
+                          style: WolfTextStyle.gothicBlackTitle,
+                        ),
                       ],
                     )
                   ],
                 ),
-                onTap: () {
+                onTap: () async {
                   switch (contents[index].contentType) {
                     case SpecialContentType.Movie:
+                      final controller = await VideoPlayerController.asset(
+                          contents[index].contentURL)
+                        ..initialize();
                       Navigator.of(context)
                           .push<dynamic>(MaterialPageRoute<dynamic>(
                         settings: const RouteSettings(name: "/watch_movie"),
-                        builder: (_) => WatchMoviePage(_videoPlayerList[index]),
+                        builder: (_) => WatchMoviePage(controller),
                         fullscreenDialog: true,
                       ));
                       break;
 
                     case SpecialContentType.WebLink:
+                      final url = contents[index].contentURL;
+                      if (await canLaunch(url)) {
+                        await launch(url);
+                      }
                       break;
 
                     case SpecialContentType.Playlist:
+                      final url = contents[index].contentURL;
+                      if (await canLaunch(url)) {
+                        await launch(url);
+                      }
                       break;
                   }
                 },
