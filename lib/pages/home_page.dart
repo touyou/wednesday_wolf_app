@@ -315,41 +315,39 @@ class _HomePageState extends State<HomePage> {
     return Padding(
       key: ValueKey(user.id),
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: GestureDetector(
-        child: Hero(
-          tag: 'chatHeader${user.id}',
-          child: CardWidget(
-            backImage: AssetImage(iconFiles[user.id][user.imageId]),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Row(
-                  children: [
-                    const SizedBox(width: 4),
-                    Icon(Icons.person,
-                        size: 12, color: WolfColors.darkGray),
-                    const SizedBox(width: 2),
-                    Text(user.name, style: WolfTextStyle.gothicBlackName),
-                  ],
-                ),
-                Row(
-                  children: [
-                    const SizedBox(width: 4),
-                    Icon(Icons.flag, size: 12, color: WolfColors.darkGray),
-                    const SizedBox(width: 2),
-                    Text(user.course, style: WolfTextStyle.gothicBlackName),
-                  ],
-                ),
-              ],
-            ),
+      child: Hero(
+        tag: 'chatHeader${user.id}',
+        child: CardWidget(
+          backImage: AssetImage(iconFiles[user.id][user.imageId]),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Row(
+                children: [
+                  const SizedBox(width: 4),
+                  Icon(Icons.person,
+                      size: 12, color: WolfColors.darkGray),
+                  const SizedBox(width: 2),
+                  Text(user.name, style: WolfTextStyle.gothicBlackName),
+                ],
+              ),
+              Row(
+                children: [
+                  const SizedBox(width: 4),
+                  Icon(Icons.flag, size: 12, color: WolfColors.darkGray),
+                  const SizedBox(width: 2),
+                  Text(user.course, style: WolfTextStyle.gothicBlackName),
+                ],
+              ),
+            ],
           ),
-        ),
-        onTap: () => Navigator.of(context).push<dynamic>(
-          MaterialPageRoute<dynamic>(
-            builder: (_) => ChatPage(myId: myUser.id, opponent: user),
-            settings: RouteSettings(
-              name: '/chat',
-              arguments: getChatList(user, me),
+          onTap: () => Navigator.of(context).push<dynamic>(
+            MaterialPageRoute<dynamic>(
+              builder: (_) => ChatPage(myId: myUser.id, opponent: user),
+              settings: RouteSettings(
+                name: '/chat',
+                arguments: getChatList(user, me),
+              ),
             ),
           ),
         ),
