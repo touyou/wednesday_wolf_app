@@ -6,12 +6,12 @@ import 'package:wednesday_wolf_app/common/constant.dart';
 import 'package:wednesday_wolf_app/components/card_widget.dart';
 import 'package:wednesday_wolf_app/pages/watch_movie_page.dart';
 
-class AnotherStoryPage extends StatefulWidget {
+class MovieListPage extends StatefulWidget {
   @override
-  _AnotherStoryPageState createState() => _AnotherStoryPageState();
+  _MovieListPageState createState() => _MovieListPageState();
 }
 
-class _AnotherStoryPageState extends State<AnotherStoryPage> {
+class _MovieListPageState extends State<MovieListPage> {
   static const thumbnailPathList = [
     "images/another1.jpg",
     "images/another2.jpg",
