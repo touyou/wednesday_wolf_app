@@ -6,7 +6,7 @@ import 'package:video_player/video_player.dart';
 import 'package:wednesday_wolf_app/common/constant.dart';
 import 'package:wednesday_wolf_app/common/utils.dart';
 import 'package:wednesday_wolf_app/entities/wolf_user.dart';
-import 'package:wednesday_wolf_app/pages/movie_list_page.dart';
+import 'package:wednesday_wolf_app/pages/special_contents_page.dart';
 import 'package:wednesday_wolf_app/pages/appinfo_page.dart';
 import 'package:wednesday_wolf_app/components/card_widget.dart';
 import 'package:wednesday_wolf_app/pages/chat_page.dart';
@@ -171,7 +171,7 @@ class _HomePageState extends State<HomePage> {
             Navigator.of(context).push<dynamic>(
               MaterialPageRoute<dynamic>(
                 settings: const RouteSettings(name: "/another_story"),
-                builder: (_) => MovieListPage(),
+                builder: (_) => SpecialContentsPage(),
                 fullscreenDialog: true,
               )
             );
