@@ -40,7 +40,7 @@ class _SpecialContentsPageState extends State<SpecialContentsPage> {
     ),
     SpecialContentModel(
       title: "オープニング",
-      contentURL: "videos/op.mp4",
+      contentURL: "videos/https://wednesday-okamikun2.netlify.com/asset/video/op.mp4",
       thumbnailURL: "images/op_thumb.jpg",
       contentType: SpecialContentType.Movie,
     ),
@@ -110,9 +110,9 @@ class _SpecialContentsPageState extends State<SpecialContentsPage> {
                 onTap: () async {
                   switch (contents[index].contentType) {
                     case SpecialContentType.Movie:
-                      final controller = await VideoPlayerController.asset(
-                          contents[index].contentURL)
-                        ..initialize();
+                      final controller = VideoPlayerController.asset(
+                          contents[index].contentURL);
+                      await controller.initialize();
                       Navigator.of(context)
                           .push<dynamic>(MaterialPageRoute<dynamic>(
                         settings: const RouteSettings(name: "/watch_movie"),
