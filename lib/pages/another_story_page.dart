@@ -40,7 +40,6 @@ class _AnotherStoryPageState extends State<AnotherStoryPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: WolfColors.mainColor,
@@ -49,20 +48,20 @@ class _AnotherStoryPageState extends State<AnotherStoryPage> {
           scrollDirection: Axis.vertical,
           itemCount: videoPathList.length,
           itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () {
-                Navigator.of(context).push<dynamic>(MaterialPageRoute<dynamic>(
-                  settings: const RouteSettings(name: "/watch_movie"),
-                  builder: (_) => WatchMoviePage(_videoPlayerList[index]),
-                  fullscreenDialog: true,
-                ));
-              },
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32),
-                child: CardWidget(
-                    backImage: AssetImage(thumbnailPathList[index]),
-                    child: null),
+            return Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32),
+              child: CardWidget(
+                backImage: AssetImage(thumbnailPathList[index]),
+                child: null,
+                onTap: () {
+                  Navigator.of(context)
+                      .push<dynamic>(MaterialPageRoute<dynamic>(
+                    settings: const RouteSettings(name: "/watch_movie"),
+                    builder: (_) => WatchMoviePage(_videoPlayerList[index]),
+                    fullscreenDialog: true,
+                  ));
+                },
               ),
             );
           }),

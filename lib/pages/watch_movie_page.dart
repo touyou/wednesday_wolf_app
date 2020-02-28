@@ -39,6 +39,7 @@ class _WatchMoviePageState extends State<WatchMoviePage> {
             ),
             Column(
               children: <Widget>[
+                Spacer(),
                 FlatButton(
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -46,22 +47,15 @@ class _WatchMoviePageState extends State<WatchMoviePage> {
                   child: Icon(Icons.close),
                 ),
                 Spacer(),
-                Stack(
-                  children: <Widget>[
-                    Align(
-                      alignment: Alignment.center,
-                      child: FlatButton(
-                        onPressed: () {
-                          setState(() {
-                            player.value.isPlaying ? player.pause() : player.play();
-                          });
-                        },
-                        child: player.value.isPlaying
-                            ? Icon(Icons.pause)
-                            : Icon(Icons.play_arrow),
-                      ),
-                    ),
-                  ],
+                FlatButton(
+                  onPressed: () {
+                    setState(() {
+                      player.value.isPlaying ? player.pause() : player.play();
+                    });
+                  },
+                  child: player.value.isPlaying
+                      ? Icon(Icons.pause)
+                      : Icon(Icons.play_arrow),
                 ),
                 Spacer()
               ],
