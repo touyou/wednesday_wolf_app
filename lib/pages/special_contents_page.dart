@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:video_player/video_player.dart';
 import 'package:wednesday_wolf_app/common/constant.dart';
 import 'package:wednesday_wolf_app/components/card_widget.dart';
 import 'package:wednesday_wolf_app/entities/special_content.dart';
@@ -33,27 +32,38 @@ class _SpecialContentsPageState extends State<SpecialContentsPage> {
     ),
     SpecialContent(
       title: 'エンディング',
-      contentURL: 'videos/ed.mp4',
+      contentURL:
+          'https://firebasestorage.googleapis.com/v0/b/wednesday-wolf-app.appspot.com/o/videos%2Fed.mp4?alt=media&token=6abb2e88-c32d-4751-a093-8300b8ae23c7',
       thumbnailURL: 'images/ed_thumb.jpg',
-      contentType: SpecialContentType.localMovie,
+      contentType: SpecialContentType.networkMovie,
     ),
     SpecialContent(
       title: 'AnotherStory #1',
-      contentURL: 'videos/another1.mov',
+      contentURL:
+          'https://firebasestorage.googleapis.com/v0/b/wednesday-wolf-app.appspot.com/o/videos%2Fanother1.mp4?alt=media&token=027e0a52-8ee4-473d-93f2-5ada54dd8c42',
       thumbnailURL: 'images/another1.jpg',
-      contentType: SpecialContentType.localMovie,
+      contentType: SpecialContentType.networkMovie,
     ),
     SpecialContent(
       title: 'AnotherStory #2',
-      contentURL: 'videos/another2.mov',
+      contentURL:
+          'https://firebasestorage.googleapis.com/v0/b/wednesday-wolf-app.appspot.com/o/videos%2Fanother2.mp4?alt=media&token=ce9c4452-bf15-44f3-a317-2a0997c86389',
       thumbnailURL: 'images/another2.jpg',
-      contentType: SpecialContentType.localMovie,
+      contentType: SpecialContentType.networkMovie,
     ),
     SpecialContent(
       title: 'AnotherStory #3',
-      contentURL: 'videos/another3.mov',
+      contentURL:
+          'https://firebasestorage.googleapis.com/v0/b/wednesday-wolf-app.appspot.com/o/videos%2Fanother3.mp4?alt=media&token=cecff1e8-c7ae-4080-b3c0-b60b47d2bfd9',
       thumbnailURL: 'images/another3.jpg',
-      contentType: SpecialContentType.localMovie,
+      contentType: SpecialContentType.networkMovie,
+    ),
+    SpecialContent(
+      title: 'AnotherStory #4',
+      contentURL:
+          'https://firebasestorage.googleapis.com/v0/b/wednesday-wolf-app.appspot.com/o/videos%2Fanother4.mov?alt=media&token=22b3ffdd-02d3-4c3d-8f64-9964093772ac',
+      thumbnailURL: 'images/another4.jpg',
+      contentType: SpecialContentType.networkMovie,
     ),
     SpecialContent(
         title: '音楽プレイリスト',
@@ -97,23 +107,19 @@ class _SpecialContentsPageState extends State<SpecialContentsPage> {
                 onTap: () async {
                   switch (contents[index].contentType) {
                     case SpecialContentType.localMovie:
-                      final controller = VideoPlayerController.asset(
-                          contents[index].contentURL);
                       await Navigator.of(context)
                           .push<dynamic>(MaterialPageRoute<dynamic>(
                         settings: const RouteSettings(name: '/watchMovie'),
-                        builder: (_) => WatchMoviePage(controller),
+                        builder: (_) => WatchMoviePage(contents[index]),
                         fullscreenDialog: true,
                       ));
                       break;
 
                     case SpecialContentType.networkMovie:
-                      final controller = VideoPlayerController.network(
-                          contents[index].contentURL);
                       await Navigator.of(context)
                           .push<dynamic>(MaterialPageRoute<dynamic>(
                         settings: const RouteSettings(name: '/watchMovie'),
-                        builder: (_) => WatchMoviePage(controller),
+                        builder: (_) => WatchMoviePage(contents[index]),
                         fullscreenDialog: true,
                       ));
                       break;
