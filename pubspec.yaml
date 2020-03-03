@@ -11,7 +11,7 @@ description: Life is Tech ! Wednesday school 2019-2020 app.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1.0.0.5
+version: 1.0.0+1.0.0.7
 
 environment:
   sdk: ">=2.2.0 <3.0.0"
@@ -34,15 +34,20 @@ dependencies:
   image_picker: any
   image_picker_saver: any
   firebase_storage: 3.1.1
-  video_player: #^0.10.4+2
-    git:
-      url: git://github.com/crazedvic/plugins.git
-      path: packages/video_player/video_player
+  video_player: ^0.10.4+2
+  chewie: any
   async: any
   progress_dialog: any
   http: any
   photo_view: any
   url_launcher: any
+
+dependency_overrides:
+  video_player:
+    git:
+      url: git://github.com/crazedvic/plugins.git
+      path: packages/video_player/video_player
+
 
 dev_dependencies:
   flutter_test:

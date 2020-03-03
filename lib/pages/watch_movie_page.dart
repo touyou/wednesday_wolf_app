@@ -1,5 +1,5 @@
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wednesday_wolf_app/common/constant.dart';
 
@@ -13,15 +13,17 @@ class WatchMoviePage extends StatefulWidget {
 }
 
 class _WatchMoviePageState extends State<WatchMoviePage> {
+  ChewieController _chewieController;
+
   @override
   void initState() {
     super.initState();
-    SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
-    widget.playerController.initialize().then((value) {
-      widget.playerController.play();
-      widget.playerController.setLooping(true);
-      setState(() {});
-    });
+    _chewieController = ChewieController(
+      videoPlayerController: widget.playerController,
+      aspectRatio: 1280 / 720,
+      autoPlay: true,
+      looping: true,
+    );
   }
 
   @override
@@ -29,63 +31,18 @@ class _WatchMoviePageState extends State<WatchMoviePage> {
     final player = widget.playerController;
 
     return Scaffold(
-      backgroundColor: Colors.black,
-      body: SafeArea(
-        top: false,
-        left: true,
-        right: true,
-        bottom: false,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            FittedBox(
-              fit: BoxFit.contain,
-              child: SizedBox(
-                width: widget.playerController.value.size?.width ?? 0,
-                height: widget.playerController.value.size?.height ?? 0,
-                child: VideoPlayer(player),
-              ),
-            ),
-            const Spacer(),
-            Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: Icon(Icons.close),
-                    color: WolfColors.lightGray,
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    iconSize: 32,
-                    onPressed: () {
-                      setState(() {
-                        player.value.isPlaying ? player.pause() : player.play();
-                      });
-                    },
-                    icon: player.value.isPlaying
-                        ? Icon(Icons.pause)
-                        : Icon(Icons.play_arrow),
-                    color: WolfColors.lightGray,
-                  ),
-                  const Spacer()
-                ],
-              ),
-            )
-          ],
-        ),
+      backgroundColor: WolfColors.baseBackground,
+      appBar: AppBar(
+        backgroundColor: WolfColors.mainColor,
       ),
+      body: SafeArea(child: Chewie(controller: _chewieController)),
     );
   }
 
   @override
   void dispose() {
-    widget.playerController.pause();
-    widget.playerController.seekTo(Duration.zero);
-    SystemChrome.setPreferredOrientations(DeviceOrientation.values);
+    widget.playerController.dispose();
+    _chewieController.dispose();
     super.dispose();
   }
 }
