@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:wednesday_wolf_app/common/utils.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -16,16 +18,8 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-
-    final timer = Timer.periodic(const Duration(milliseconds: 700), (value) {
-      setState(() {
-        _logoOpacity = _logoOpacity == 1 ? 0.3 : 1.0;
-      });
-    });
-
-    Future<dynamic>.delayed(const Duration(seconds: 3)).then((dynamic value) {
-      timer.cancel();
-      _handleTimeout();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkNetwork();
     });
   }
 
@@ -58,6 +52,33 @@ class _SplashPageState extends State<SplashPage> {
         ),
       ),
     );
+  }
+
+  Future _checkNetwork() async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
+      await showDialogMessage(context,
+              title: 'ネットワークエラー',
+              message: 'このアプリはインターネット接続を利用します。接続を確認してからOKを押してください。',
+              isOkOnly: true)
+          .then((value) {
+        if (value) {
+          _checkNetwork();
+        }
+      });
+    } else {
+      final timer = Timer.periodic(const Duration(milliseconds: 700), (value) {
+        setState(() {
+          _logoOpacity = _logoOpacity == 1 ? 0.3 : 1.0;
+        });
+      });
+
+      await Future<dynamic>.delayed(const Duration(seconds: 3))
+          .then((dynamic value) {
+        timer.cancel();
+        _handleTimeout();
+      });
+    }
   }
 
   void _handleTimeout() {
