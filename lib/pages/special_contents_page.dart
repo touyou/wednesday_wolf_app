@@ -26,9 +26,9 @@ class _SpecialContentsPageState extends State<SpecialContentsPage> {
     ),
     SpecialContent(
       title: 'オープニング',
-      contentURL: 'https://wednesday-okamikun2.netlify.com/asset/video/op.mp4',
+      contentURL: 'videos/op.mp4',
       thumbnailURL: 'images/op_thumb.jpg',
-      contentType: SpecialContentType.networkMovie,
+      contentType: SpecialContentType.localMovie,
     ),
     SpecialContent(
       title: 'エンディング',
