@@ -7,6 +7,7 @@ import 'package:wednesday_wolf_app/pages/splash_page.dart';
 void main() => runApp(MaterialApp(
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: const [
