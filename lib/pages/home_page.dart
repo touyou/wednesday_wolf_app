@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wednesday_wolf_app/common/constant.dart';
+import 'package:wednesday_wolf_app/common/secret_utils.dart';
 import 'package:wednesday_wolf_app/common/utils.dart';
 import 'package:wednesday_wolf_app/components/card_widget.dart';
 import 'package:wednesday_wolf_app/entities/wolf_user.dart';
@@ -64,7 +65,10 @@ class _HomePageState extends State<HomePage> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 120),
-            child: Image.asset('images/splash_title.png'),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Image.asset('images/splash_title.png'),
+            ),
           ),
           Column(children: [
             const Spacer(),
@@ -294,7 +298,7 @@ class _HomePageState extends State<HomePage> {
     }
     for (final data in snapshot) {
       final user = WolfUser.fromSnapshot(data);
-      if (!isOsuzu(user, me)) {
+      if (!isListedUser(user, me)) {
         continue;
       }
       children.add(_buildListItem(context, data, myUser));
@@ -344,7 +348,7 @@ class _HomePageState extends State<HomePage> {
               builder: (_) => ChatPage(myId: myUser.id, opponent: user),
               settings: RouteSettings(
                 name: '/chat',
-                arguments: getChatList(user, myUser),
+                arguments: getChatIds(user, myUser),
               ),
             ),
           ),
