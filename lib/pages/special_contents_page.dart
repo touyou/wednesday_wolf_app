@@ -26,6 +26,12 @@ class _SpecialContentsPageState extends State<SpecialContentsPage> {
       contentType: SpecialContentType.webLink,
     ),
     SpecialContent(
+      title: 'The other side of Wednesday',
+      contentURL: 'https://the-other-side-of-wednesday.netlify.com/',
+      thumbnailURL: 'images/other_side.jpg',
+      contentType: SpecialContentType.webLink,
+    ),
+    SpecialContent(
       title: 'オープニング',
       contentURL: 'videos/op.mp4',
       thumbnailURL: 'images/op_thumb.jpg',
